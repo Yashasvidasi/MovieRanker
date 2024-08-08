@@ -190,6 +190,7 @@ const ActorPage = ({ params }: { params: any }) => {
     return (
       <div className="flex flex-col justify-center w-screen h-screen items-center mx-auto my-auto">
         <img className="w-96 h-96" src="/assets/PYh.gif" alt="" />
+        <div className="text-xl"> Loading </div>
       </div>
     );
   if (!personalData) return <div>No personal data available</div>;
