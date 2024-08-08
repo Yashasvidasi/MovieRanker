@@ -179,3 +179,5 @@ const SearchContainer = forwardRef<HTMLDivElement, SearchContainerProps>(
 );
 
 export default SearchContainer;
+
+SearchContainer.displayName = "SearchContainer";

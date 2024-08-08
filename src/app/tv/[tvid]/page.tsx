@@ -620,7 +620,7 @@ const MoviePage = ({ params }: { params: any }) => {
           {reccomendation.length > 0 && (
             <div className="mb-10 flex flex-col">
               <h2 className="text-xl sm:text-2xl font-semibold mb-5">
-                If you Liked '{movie.name}' then try:
+                If you Liked {movie.name} then try:
               </h2>
               <div className="flex flex-row flex-wrap gap-3">
                 {reccomendation.map((item, index) => (

@@ -38,3 +38,5 @@ const FilterContainer = forwardRef<HTMLDivElement>((props, ref) => {
 });
 
 export default FilterContainer;
+
+FilterContainer.displayName = "FilterContainer";
