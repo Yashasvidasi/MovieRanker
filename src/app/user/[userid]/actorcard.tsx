@@ -2,11 +2,9 @@
 import React, { Component, useContext } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { Console } from "console";
 
-const MovieCard = (props: {
+const ActorCard = (props: {
   data: {
-    otype: string;
     profile_path: any;
     gender: any;
     id: number;
@@ -33,12 +31,7 @@ const MovieCard = (props: {
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.98 }}
       onClick={() => {
-        console.log(props.data);
-        if (props.data.otype === "tv") {
-          router.push(`/tv/${props.data.id}`);
-        } else {
-          router.push(`/movie/${props.data.id}`);
-        }
+        router.push(`/person/${props.data.id}`);
       }}
     >
       <motion.div
@@ -59,4 +52,4 @@ const MovieCard = (props: {
   );
 };
 
-export default MovieCard;
+export default ActorCard;

@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState, useRef } from "react";
 import { UserContext } from "./UserContext";
 import SideBar from "@/components/SideBar";
 import MovieCard from "./moviecard"; // Import the MovieCard component
+
 import {
   FaFilm,
   FaTv,
@@ -16,6 +17,8 @@ import {
 } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { FaRankingStar } from "react-icons/fa6";
+import ActorCard from "./actorcard";
+import GenreChart from "./GenreChart";
 
 const InnerContainer = ({ params }: { params: any }) => {
   const router = useRouter();
@@ -141,13 +144,13 @@ const InnerContainer = ({ params }: { params: any }) => {
             </div>
           </div>
 
-          {/* Watch Later Section */}
+          {/* Watch later Section */}
           <div className="bg-gray-900 p-6 w-full rounded-lg shadow-md">
-            <FaClock className="text-3xl text-yellow-500 mb-4" />
+            <FaHistory className="text-3xl text-pink-500 mb-4" />
             <div className="text-2xl font-semibold mb-3">
               Watch Later: {watchlater.length}
             </div>
-            <div className="relative flex flex-row">
+            <div className="relative h-64 flex flex-row">
               <motion.div
                 onClick={() => {
                   scrollLeft(watchLaterRef);
@@ -172,11 +175,11 @@ const InnerContainer = ({ params }: { params: any }) => {
                 ))}
               </div>
               <motion.div
-                whileHover={{ scale: 1.07 }}
-                whileTap={{ scale: 0.98 }}
                 onClick={() => {
                   scrollRight(watchLaterRef);
                 }}
+                whileHover={{ scale: 1.07 }}
+                whileTap={{ scale: 0.98 }}
                 className="absolute right-0 hover:cursor-pointer h-52 mt-8 w-16 rounded-l-full bg-opacity-15 hover:bg-opacity-30 flex flex-col justify-center bg-white z-10  px-10"
               >
                 <img
@@ -264,7 +267,7 @@ const InnerContainer = ({ params }: { params: any }) => {
                 className="flex flex-row space-x-4 overflow-x-scroll scroll-smooth scrollbar-thin scrollbar-track-transparent scrollbar-thumb-transparent"
               >
                 {favorites?.map((item, index) => (
-                  <MovieCard key={index} data={item} />
+                  <ActorCard key={index} data={item} />
                 ))}
               </div>
               <motion.div
@@ -288,10 +291,10 @@ const InnerContainer = ({ params }: { params: any }) => {
           {/* Movie Ranking Section */}
           <div className="bg-gray-900 flex md:flex-row flex-col justify-between rounded-lg">
             <div className="bg-gray-900 w-full p-6 rounded-lg shadow-md col-span-2">
-              <FaRankingStar className="text-3xl text-red-500 mb-4" />
+              <FaRankingStar className="text-3xl text-yellow-500 mb-4" />
               <div className="flex flex-row justify-between">
                 <div className="text-xl md:text-2xl font-semibold">
-                  Movies Ranking
+                  Top 10 Movies:
                 </div>
                 <motion.div
                   className="text-xl font-semibold flex flex-row justify-between hover:cursor-pointer"
@@ -302,14 +305,20 @@ const InnerContainer = ({ params }: { params: any }) => {
                     scale: 1.06,
                   }}
                 >
-                  <p>Rank Them</p>
+                  <p>Tier List</p>
                   <FaArrowRight className="self-center ml-3" />
                 </motion.div>
               </div>
               <ul className="text-xl flex flex-col space-y-4 py-7">
                 {sortedMovieRanking?.map((item, index) => (
-                  <div
-                    className="w-full bg-slate-950 h-24 flex flex-row justify-between shadow-md p-2 shadow-black pt-3 rounded-lg"
+                  <motion.div
+                    onClick={() => {
+                      router.push(`/movie/${item.id}`);
+                    }}
+                    whileHover={{
+                      scale: 1.04,
+                    }}
+                    className="w-full hover:cursor-pointer bg-slate-950 h-24 flex flex-row justify-between shadow-md p-2 shadow-black pt-3 rounded-lg"
                     key={index}
                   >
                     <div className="flex flex-row">
@@ -320,23 +329,23 @@ const InnerContainer = ({ params }: { params: any }) => {
                       <div className="ml-3">{item.title}</div>
                     </div>
                     {/* Placeholder for slider to set the rating */}
-                    <div className="text-nowrap self-end mb-3">
-                      {item.rating === 0 ? "Not Rated" : item.rating}
+                    <div className="text-nowrap self-end mb-3 mr-5">
+                      Rating: {item.rating === 0 ? "Not Rated" : item.rating}
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </ul>
             </div>
 
             {/* Series Ranking Section */}
             <div className="bg-gray-900 p-6 w-full rounded-lg shadow-md col-span-2">
-              <FaRankingStar className="text-3xl text-red-500 mb-4" />
+              <FaRankingStar className="text-3xl text-yellow-500 mb-4" />
               <div className="flex flex-row justify-between">
                 <div className="text-xl md:text-2xl font-semibold">
-                  Series Ranking
+                  Top 10 Series:
                 </div>
                 <motion.div
-                  className="text-xxl font-semibold flex flex-row justify-between hover:cursor-pointer"
+                  className="text-xl font-semibold flex flex-row justify-between hover:cursor-pointer"
                   onClick={() => {
                     router.push(`/user/${params}/rankingseries`);
                   }}
@@ -344,14 +353,20 @@ const InnerContainer = ({ params }: { params: any }) => {
                     scale: 1.06,
                   }}
                 >
-                  <p>Rank Them</p>
+                  <p>Tier List</p>
                   <FaArrowRight className="self-center ml-3" />
                 </motion.div>
               </div>
-              <ul className="text-xl flex flex-col space-y-4">
+              <ul className="text-xl flex flex-col space-y-4 py-7">
                 {sortedSeriesRanking?.map((item, index) => (
-                  <div
-                    className="w-full bg-slate-950 h-24 flex flex-row justify-between shadow-md p-2 shadow-black pt-3 rounded-lg"
+                  <motion.div
+                    onClick={() => {
+                      router.push(`/tv/${item.id}`);
+                    }}
+                    whileHover={{
+                      scale: 1.04,
+                    }}
+                    className="w-full hover:cursor-pointer bg-slate-950 h-24 flex flex-row justify-between shadow-md p-2 shadow-black pt-3 rounded-lg"
                     key={index}
                   >
                     <div className="flex flex-row">
@@ -359,16 +374,23 @@ const InnerContainer = ({ params }: { params: any }) => {
                         src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
                         alt=""
                       />
-                      <div className="ml-3">{item.title}</div>
+                      <div className="ml-3">{item.name}</div>
                     </div>
                     {/* Placeholder for slider to set the rating */}
-                    <div className="text-nowrap self-end mb-3">
-                      {item.rating === 0 ? "Not Rated" : item.rating}
+                    <div className="text-nowrap self-end mb-3 mr-5">
+                      Rating: {item.rating === 0 ? "Not Rated" : item.rating}
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </ul>
             </div>
+          </div>
+          <div className="bg-gray-900 flex flex-col justify-center items-center rounded-lg mt-10 py-10 w-full">
+            <div className="text-5xl mt-2 mb-10">STATISTICS</div>
+            <GenreChart
+              movieRanking={movieranking}
+              seriesRanking={seriesranking}
+            />
           </div>
         </div>
       </div>

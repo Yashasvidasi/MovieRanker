@@ -25,7 +25,7 @@ const Tile: React.FC<TileProps> = ({
     <motion.div
       className="w-24 h-36 border border-white hover:cursor-pointer m-1"
       onClick={() => {
-        router.push(`/tv/${id}`);
+        router.push(`/movie/${id}`);
       }}
       whileHover={{
         scale: 1.04,

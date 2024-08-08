@@ -4,6 +4,7 @@ interface Movie {
   id: string;
   title: string;
   poster_path: string;
+  otype: string;
 }
 
 interface MovieR {
@@ -38,6 +39,7 @@ interface WatchH {
   id: string;
   title: string;
   poster_path: string;
+  otype: string;
 }
 
 interface IUser extends Document {
@@ -63,12 +65,14 @@ const watchSchema: Schema = new Schema({
   id: { type: String, required: true },
   title: { type: String, required: true },
   poster_path: { type: String, required: true },
+  otype: { type: String, required: true },
 });
 
 const movieSchema: Schema = new Schema({
   id: { type: String, required: true },
   title: { type: String, required: true },
   poster_path: { type: String, required: true },
+  otype: { type: String, required: true },
 });
 
 const actorSchema: Schema = new Schema({

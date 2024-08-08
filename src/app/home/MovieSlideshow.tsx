@@ -60,16 +60,29 @@ const MovieSlideshow = () => {
 
   const getMovie = (number: number) => {
     if (movies.length !== 0) {
-      return movies[number] || "Loading...";
+      return (
+        movies[number] || (
+          <div className="flex flex-col justify-center w-screen h-screen items-center mx-auto my-auto">
+            <img className="w-96 h-96" src="/assets/PYh.gif" alt="" />
+          </div>
+        )
+      );
     } else {
-      return "Loading...";
+      return (
+        <div className="flex flex-col justify-center w-screen h-screen items-center mx-auto my-auto">
+          <img className="w-96 h-96" src="/assets/PYh.gif" alt="" />
+        </div>
+      );
     }
   };
 
   return (
     <div className="w-full h-full">
       {isLoading ? (
-        "Loading..."
+        <div className="flex flex-col justify-center w-screen z-50 items-center mx-auto my-auto">
+          <img className="w-72 h-72" src="/assets/PYh.gif" alt="" />
+          <div className="text-xl text-center text-white"> Loading </div>
+        </div>
       ) : (
         <SlideShowCard
           ref={referal}

@@ -33,7 +33,7 @@ const Page = ({ params }: { params: any }) => {
         notifySuccess();
         console.log();
         setTimeout(() => {
-          router.replace("/");
+          router.replace("/login");
         }, 5000);
         return;
       } else {

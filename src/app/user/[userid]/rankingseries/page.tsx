@@ -1,11 +1,9 @@
 "use client";
-import React, { useContext, useEffect, useState } from "react";
-import { useDrop, DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { UserContext } from "../UserContext";
-import Tile from "./Tile";
-import { useRouter } from "next/navigation";
 import SideBar from "@/components/SideBar";
+import React, { useContext, useEffect, useState } from "react";
+import { UserContext } from "../UserContext";
+import Tile from "./Tile"; // Adjust the path as needed
+import { useRouter } from "next/navigation";
 
 const tierColors = [
   "to-red-600", // Tier 1: Rating 10
@@ -23,6 +21,7 @@ const tierColors = [
 
 const Page: React.FC = () => {
   const router = useRouter();
+
   const { seriesranking, setseriesranking } = useContext(UserContext)!;
   const [localSeriesRanking, setLocalSeriesRanking] = useState(seriesranking);
 
@@ -64,19 +63,8 @@ const Page: React.FC = () => {
     return 10 - Math.floor(rating);
   };
 
-  const handleDrop = (item: any, newTierIndex: number) => {
-    const oldTierIndex = getTierIndex(item.rating);
-    if (oldTierIndex === newTierIndex) return;
-
-    const updatedRanking = localSeriesRanking.map((series) =>
-      series.id === item.id
-        ? { ...series, rating: 10 - newTierIndex - 0.1 }
-        : series
-    );
-    setLocalSeriesRanking(updatedRanking);
-  };
-
   const renderTiles = (tierIndex: number) => {
+    console.log(localSeriesRanking);
     return localSeriesRanking
       .filter((series) => getTierIndex(series.rating) === tierIndex)
       .sort((a, b) => b.rating - a.rating)
@@ -93,61 +81,45 @@ const Page: React.FC = () => {
       ));
   };
 
-  const renderTiers = () => {
-    return tierColors.map((color, tierIndex) => {
-      const [{ isOver }, drop] = useDrop(() => ({
-        accept: "TILE",
-        drop: (item) => handleDrop(item, tierIndex),
-        collect: (monitor) => ({
-          isOver: monitor.isOver(),
-        }),
-      }));
-
-      return (
-        <div
-          ref={drop}
-          key={tierIndex}
-          className={`flex flex-row h-32 border border-white bg-gradient-to-r from-black ${color} p-2 rounded-md ${
-            isOver ? "bg-opacity-50" : ""
-          }`}
-        >
-          <div className="text-2xl self-center mr-5">{tierIndex}</div>
-          <div className="flex flex-wrap">{renderTiles(tierIndex)}</div>
-        </div>
-      );
-    });
+  const getletter = (num: number): string => {
+    if (num === 0) {
+      return "S";
+    } else if (num === 10) {
+      return "Not Rated";
+    } else if (num >= 1 && num <= 9) {
+      // Convert number to corresponding letter (1 -> A, 2 -> B, ..., 9 -> I)
+      return String.fromCharCode(64 + num);
+    } else {
+      return "Invalid"; // Handle numbers outside the range 0-10 if needed
+    }
   };
 
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row overflow-hidden">
       <SideBar />
-      <div className="flex-1 p-6 w-full border border-white">
-        <header className="flex justify-between items-center mb-6">
-          <button
-            onClick={() => router.back()}
-            className="bg-gray-300 px-4 py-2 rounded text-gray-800"
-          >
-            Back
-          </button>
-          <button
-            onClick={handleConfirm}
-            className="bg-blue-500 px-6 py-2 rounded text-white"
-          >
-            Confirm
-          </button>
+      <div className="flex-1 p-6 w-full overflow-auto h-screen scrollbar scrollbar-track-transparent scrollbar-thumb-white ">
+        <header className="flex flex-row justify-between items-center mb-6 w-full">
+          <div className="text-5xl text-center  w-full">Tier List</div>
         </header>
-        <div className="flex flex-col w-full space-y-4">{renderTiers()}</div>
+        <div className="flex flex-col w-full space-y-4">
+          {tierColors.map((color, tierIndex) => {
+            console.log(`bg-gradient-to-r from-black to-${color}`);
+            return (
+              <div
+                key={tierIndex}
+                className={`flex flex-row min-h-40 max-h-fit border border-white bg-gradient-to-r from-black ${color} p-2 rounded-md`}
+              >
+                <div className="text-2xl text-center w-20 self-center">
+                  {getletter(tierIndex)}
+                </div>
+                <div className="flex flex-wrap">{renderTiles(tierIndex)}</div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
 };
 
-const Giver = () => {
-  return (
-    <DndProvider backend={HTML5Backend}>
-      <div>coming soon</div>
-    </DndProvider>
-  );
-};
-
-export default Giver;
+export default Page;

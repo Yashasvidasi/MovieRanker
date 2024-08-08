@@ -68,14 +68,16 @@ export async function POST(req: NextRequest) {
           if (newarr.length === 0) {
             user.WatchLater.list.push(object);
           }
+          console.log(object, user.WatchLater.list);
         } else if (type === "watch_history") {
           const newarr = user.WatchHistory.list.filter((item: any) => {
             return item.id === object.id;
           });
 
-          if (newarr.length === 0) {
-            user.MovieHistory.list.push(object);
+          if (newarr.length === 0 && object.otype) {
+            user.WatchHistory.list.push(object);
           }
+          console.log(object, user.WatchHistory.list);
         } else if (type === "movie_ranking") {
           const newarr = user.MovieRanking.list.filter((item: any) => {
             return item.id === object.id;
@@ -130,6 +132,18 @@ export async function POST(req: NextRequest) {
               return item.id !== object.id;
             }
           );
+        }
+      } else if (operation === "update") {
+        if (type === "series_ranking") {
+          let x = user.SeriesRanking.list.find((item: any) => {
+            return item.id === object.id;
+          });
+          x.rating = object.rating;
+        } else if (type === "movie_ranking") {
+          let x = user.MovieRanking.list.find((item: any) => {
+            return item.id === object.id;
+          });
+          x.rating = object.rating;
         }
       }
 

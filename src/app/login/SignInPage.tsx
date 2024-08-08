@@ -70,7 +70,7 @@ function SignInPage({ setlogin }: { setlogin: (arg0: boolean) => void }) {
             <input
               type="text"
               value={username}
-              placeholder="Username or Email"
+              placeholder="Username"
               className="w-full p-3 text-bl focus:outline-none"
               onChange={(e) => {
                 setUsername(e.target.value);
@@ -82,7 +82,7 @@ function SignInPage({ setlogin }: { setlogin: (arg0: boolean) => void }) {
             <input
               type="text"
               value={email}
-              placeholder="Username or Email"
+              placeholder="Email"
               className="w-full p-3 text-bl focus:outline-none"
               onChange={(e) => {
                 setEmail(e.target.value);
@@ -122,7 +122,7 @@ function SignInPage({ setlogin }: { setlogin: (arg0: boolean) => void }) {
               handlesubmitsignin();
             }}
           >
-            Log In
+            Sign Up
           </button>
         </div>
 
