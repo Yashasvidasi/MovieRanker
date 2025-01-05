@@ -240,9 +240,10 @@ const MoviePage = ({ params }: { params: any }) => {
   };
 
   useEffect(() => {
-    if (tvid) {
-      const fetchData = async () => {
-        try {
+    const fetchData = async () => {
+      try {
+        if (tvid) {
+          // Fetch data from API
           const response = await fetch(`/api/getseries`, {
             method: "POST",
             headers: {
@@ -265,16 +266,30 @@ const MoviePage = ({ params }: { params: any }) => {
           setreviews(revs);
           setcast(cast);
           console.log(revs);
-        } catch (err) {
-          console.error("Fetch Error:", err);
-          setError("Error fetching data");
-        } finally {
-          setLoading(false);
         }
-      };
 
-      fetchData();
-    }
+        const watchHistory = JSON.parse(
+          localStorage.getItem("WatchHistory") || "[]"
+        );
+
+        // Find the matching entry in the watch history
+        const matchedEntry = watchHistory.find(
+          (element: { id: any }) => element.id === tvid
+        );
+
+        if (matchedEntry) {
+          setepisode(matchedEntry.episode || 1); // Default to 1 if episode is not found
+          setseason(matchedEntry.season || 1); // Default to 1 if season is not found
+        }
+      } catch (err) {
+        console.error("Fetch Error:", err);
+        setError("Error fetching data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [tvid]);
 
   useEffect(() => {
@@ -334,6 +349,8 @@ const MoviePage = ({ params }: { params: any }) => {
       title: movie!.name,
       poster_path: movie!.poster_path,
       otype: "tv",
+      season: season,
+      episode: episode,
     };
 
     // Get the existing WatchHistory from localStorage or initialize an empty array if not found
@@ -342,17 +359,28 @@ const MoviePage = ({ params }: { params: any }) => {
     );
 
     // Check if the movie is already in the WatchHistory (based on 'id')
-    const isAlreadyInHistory = watchHistory.some(
+    const existingIndex = watchHistory.findIndex(
       (item: any) => item.id === obj.id
     );
 
-    // Append the new object to the list only if it's not already present
-    if (!isAlreadyInHistory) {
+    if (existingIndex !== -1) {
+      // Update the existing object's episode and season
+      watchHistory[existingIndex].season = season;
+      watchHistory[existingIndex].episode = episode;
+    } else {
+      // Append the new object to the list if it's not already present
       watchHistory.push(obj);
-      // Save the updated list back to localStorage
-      localStorage.setItem("WatchHistory", JSON.stringify(watchHistory));
     }
+
+    // Save the updated list back to localStorage
+    localStorage.setItem("WatchHistory", JSON.stringify(watchHistory));
   };
+
+  useEffect(() => {
+    if (episode !== 1 && season !== 1) {
+      handlecc();
+    }
+  }, [episode, season]);
 
   if (loading)
     return (
