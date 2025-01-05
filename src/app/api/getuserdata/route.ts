@@ -39,6 +39,7 @@ export async function GET(req: NextRequest) {
       );
       return response;
     } else {
+      console.log(user);
       const response = NextResponse.json(
         {
           message: "User found",

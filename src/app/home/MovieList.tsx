@@ -4,7 +4,6 @@ import CorouselIndex from "./CorouselIndex";
 import { AppContext } from "../AppContext";
 import corouselindex from "@/constants";
 import { motion, useAnimation } from "framer-motion";
-import { News_Cycle } from "next/font/google";
 import MovieCard from "./moviecard";
 import { useInView } from "react-intersection-observer";
 
@@ -237,7 +236,7 @@ const MovieList = () => {
   return (
     <div className="w-full h-full flex flex-col ">
       <CorouselIndex />
-      <div className="relative flex flex-row">
+      <div className="relative flex flex-row mt-3">
         <motion.div
           onClick={scrollLeft}
           whileHover={{ scale: 1.07 }}

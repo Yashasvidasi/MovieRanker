@@ -13,7 +13,6 @@ const ActorCard = (props: {
     name: any;
   };
 }) => {
-  const router = useRouter();
   const truncatetext = (s: string | undefined) => {
     if (s === undefined) {
       return null;
@@ -26,13 +25,9 @@ const ActorCard = (props: {
   };
 
   return (
-    <motion.div
+    <a
+      href={`/person/${props.data.id}`}
       className="relative h-fit m-3 flex flex-col hover:cursor-pointer"
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.98 }}
-      onClick={() => {
-        router.push(`/person/${props.data.id}`);
-      }}
     >
       <motion.div
         className="absolute top-0 left-0 w-full h-1 bg-red-500 rounded"
@@ -48,7 +43,7 @@ const ActorCard = (props: {
       <p className="h-fit w-32 mt-1 text-center">
         {truncatetext(props.data.title || props.data.name)}
       </p>
-    </motion.div>
+    </a>
   );
 };
 

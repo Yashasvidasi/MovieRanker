@@ -89,11 +89,13 @@ const Page: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-row overflow-hidden">
+    <div className="flex flex-row overflow-hidden bg-black text-white">
       <SideBar />
       <div className="flex-1 p-6 w-full  overflow-auto h-screen scrollbar scrollbar-track-transparent scrollbar-thumb-white ">
         <header className="flex flex-row justify-between items-center mb-6 w-full">
-          <div className="text-5xl text-center  w-full">Tier List</div>
+          <div className="md:text-5xl text-3xl text-center  w-full">
+            Tier List
+          </div>
         </header>
         <div className="flex flex-col w-full space-y-4">
           {tierColors.map((color, tierIndex) => {
@@ -101,7 +103,7 @@ const Page: React.FC = () => {
             return (
               <div
                 key={tierIndex}
-                className={`flex flex-row min-h-40 max-h-fit  bg-gradient-to-r from-black ${color} p-2 rounded-md`}
+                className={`flex flex-row md:min-h-40 min-h-32 max-h-fit  bg-gradient-to-r from-black ${color} p-2 rounded-md`}
               >
                 <div className="text-2xl text-center w-20 self-center">
                   {getletter(tierIndex)}

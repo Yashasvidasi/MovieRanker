@@ -65,8 +65,16 @@ function TopContainer() {
 
   const router = useRouter();
 
+  // Generate dynamic route for the Play button
+  const generateRoute = () => {
+    if (data?.name) {
+      return data.gender ? `/person/${data.id}` : `/tv/${data.id}`;
+    }
+    return `/movie/${data?.id}`;
+  };
+
   return (
-    <div className="bg-black h-1/2 w-full">
+    <div className="bg-black h-1/2 w-full text-white">
       {data ? (
         <>
           <div
@@ -92,30 +100,26 @@ function TopContainer() {
                 </div>
               </div>
               <div className="self-center ml-10 mt-3">
-                <motion.div
-                  whileHover={{ scale: 1.04 }}
-                  className="p-2 hover:cursor-pointer border-2 border-white text-lg rounded-2xl flex flex-row"
-                  onClick={() => {
-                    if (data.name) {
-                      if (data.gender) {
-                        router.push(`/person/${data.id}`);
-                      } else {
-                        router.push(`/tv/${data.id}`);
-                      }
-                    } else {
-                      router.push(`/movie/${data.id}`);
-                    }
-                  }}
-                >
-                  <div className="self-center mr-1.5">
-                    <img
-                      className="h-5 w-5"
-                      src="/assets/play.png"
-                      style={{ filter: "invert(100%)" }}
-                    />
-                  </div>
-                  <div className="self-center">Play</div>
-                </motion.div>
+                <a href={generateRoute()} rel="noopener noreferrer">
+                  <motion.div
+                    whileHover={{ scale: 1.04 }}
+                    className="p-2 hover:cursor-pointer border-2 border-white text-lg rounded-2xl flex flex-row"
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevent default link behavior
+                      router.push(generateRoute()); // Use SPA navigation
+                    }}
+                  >
+                    <div className="self-center mr-1.5">
+                      <img
+                        className="h-5 w-5"
+                        src="/assets/play.png"
+                        style={{ filter: "invert(100%)" }}
+                        alt="Play Icon"
+                      />
+                    </div>
+                    <div className="self-center">Play</div>
+                  </motion.div>
+                </a>
               </div>
             </div>
           </div>
@@ -149,8 +153,7 @@ function TopContainer() {
                 },
               }}
             />
-            <div className="absolute top-0 left-0 h-full w-full bg-gradient-to-l from-transparent to-black bg-opacity-40"></div>
-            <div className="absolute bottom-0 left-0 h-full w-full bg-gradient-to-b from-transparent to-black bg-opacity-40 "></div>
+            <div className="absolute top-0 left-0 h-full w-full bg-gradient-to-l from-transparent to-black bg-opacity-10"></div>
           </div>
         </>
       ) : currentSelection === 0 ? (

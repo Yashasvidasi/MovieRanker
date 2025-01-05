@@ -105,7 +105,7 @@ const Page = () => {
   }, [page]);
 
   return (
-    <div className="relative flex flex-row w-screen h-screen bg-black overflow-hidden">
+    <div className="relative flex flex-row w-screen h-screen bg-black overflow-hidden text-white">
       <SideBar />
       <div className="w-full flex flex-col">
         <SearchBar handleSearch={handleSearch} />

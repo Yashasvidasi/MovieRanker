@@ -23,7 +23,7 @@ function CorouselIndex() {
     }
   }, [show]);
   return (
-    <div className="relative flex flex-col w-fit h-fit border border-white rounded-lg ml-3 z-50">
+    <div className="relative flex flex-col w-fit h-fit border border-white rounded-lg ml-3 z-50 text-white">
       {corouselindex
         .filter((item, index) => {
           return index === listType - 1;

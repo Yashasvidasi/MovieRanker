@@ -103,51 +103,54 @@ const searchSchema: Schema = new Schema({
   adult: { type: Boolean, required: true },
 });
 
-const userSchema: Schema<IUser> = new Schema({
-  username: {
-    type: String,
-    required: [true, "Please Provide a UserName"],
-    unique: true,
-  },
-  email: {
-    type: String,
-    required: [true, "Please Provide an Email"],
-    unique: true,
-  },
-  password: { type: String, required: [true, "Please Provide a Password"] },
-  isVerified: {
-    type: Boolean,
-    default: false,
-  },
-  isAdmin: {
-    type: Boolean,
-    default: false,
-  },
-  forgotPasswordToken: String,
-  forgotPasswordTokenExpiry: Date,
-  verifyToken: String,
-  verifyTokenExpiry: Date,
+const userSchema: Schema<IUser> = new Schema(
+  {
+    username: {
+      type: String,
+      required: [true, "Please Provide a UserName"],
+      unique: true,
+    },
+    email: {
+      type: String,
+      required: [true, "Please Provide an Email"],
+      unique: true,
+    },
+    password: { type: String, required: [true, "Please Provide a Password"] },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    forgotPasswordToken: String,
+    forgotPasswordTokenExpiry: Date,
+    verifyToken: String,
+    verifyTokenExpiry: Date,
 
-  WatchHistory: {
-    list: [watchSchema],
-  },
+    WatchHistory: {
+      list: [watchSchema],
+    },
 
-  WatchLater: {
-    list: [movieSchema],
+    WatchLater: {
+      list: [movieSchema],
+    },
+    MovieRanking: {
+      list: [movieRSchema],
+    },
+    SeriesRanking: {
+      list: [seriesRSchema],
+    },
+    FavoriteActors: {
+      list: [actorSchema],
+    },
+    SearchHistory: {
+      list: [searchSchema],
+    },
   },
-  MovieRanking: {
-    list: [movieRSchema],
-  },
-  SeriesRanking: {
-    list: [seriesRSchema],
-  },
-  FavoriteActors: {
-    list: [actorSchema],
-  },
-  SearchHistory: {
-    list: [searchSchema],
-  },
-});
+  { versionKey: false }
+);
 
 const User = mongoose.models.User || mongoose.model<IUser>("User", userSchema);
 

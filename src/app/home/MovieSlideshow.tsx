@@ -62,14 +62,14 @@ const MovieSlideshow = () => {
     if (movies.length !== 0) {
       return (
         movies[number] || (
-          <div className="flex flex-col justify-center w-screen h-screen items-center mx-auto my-auto">
+          <div className="flex flex-col justify-center w-screen h-screen items-center mx-auto my-auto bg-black text-white">
             <img className="w-96 h-96" src="/assets/PYh.gif" alt="" />
           </div>
         )
       );
     } else {
       return (
-        <div className="flex flex-col justify-center w-screen h-screen items-center mx-auto my-auto">
+        <div className="flex flex-col justify-center w-screen h-screen items-center mx-auto my-auto bg-black text-white">
           <img className="w-96 h-96" src="/assets/PYh.gif" alt="" />
         </div>
       );

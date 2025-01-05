@@ -1,6 +1,6 @@
 "use client";
-import React, { Component, useContext } from "react";
-import { motion, useAnimation } from "framer-motion";
+import React from "react";
+import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 const FilterCard = (props: {
@@ -14,58 +14,66 @@ const FilterCard = (props: {
   };
 }) => {
   const router = useRouter();
-  const truncatetext = (s: string | undefined) => {
-    if (s === undefined) {
-      return null;
-    }
-    if (s.length > 25) {
-      return s.slice(0, 24) + "...";
-    } else {
-      return s;
-    }
+
+  // Function to truncate text to 25 characters
+  const truncateText = (s: string | undefined) => {
+    if (!s) return null;
+    return s.length > 25 ? `${s.slice(0, 24)}...` : s;
   };
 
-  return (
-    <motion.div
-      className="relative h-fit m-3 flex flex-col hover:cursor-pointer"
-      whileHover={{ scale: 1.03 }}
-      whileTap={{ scale: 0.98 }}
-      onClick={() => {
-        if (props.data.name) {
-          if (props.data.gender) {
-            router.push(`/person/${props.data.id}`);
-          } else {
-            router.push(`/tv/${props.data.id}`);
-          }
-        } else {
-          router.push(`/movie/${props.data.id}`);
-        }
-      }}
-    >
-      <motion.div
-        className="absolute top-0 left-0 w-full h-1 bg-red-500 rounded"
-        initial={{ width: 0 }}
-      />
-      {props.data.poster_path || props.data.profile_path ? (
-        <img
-          className="border-2 border-white h-56 w-32"
-          src={`https://image.tmdb.org/t/p/w500${
-            props.data.poster_path || props.data.profile_path
-          }`}
-          alt={props.data.title || props.data.name}
-        />
-      ) : (
-        <div className="border-2 border-white h-56 w-32 flex flex-col justify-center items-center">
-          <p className="self-center w-full text-center">
-            Picture Not Available
-          </p>
-        </div>
-      )}
+  // Generate the dynamic link based on data
+  const generateLink = () => {
+    if (props.data.name) {
+      return props.data.gender
+        ? `/person/${props.data.id}`
+        : `/tv/${props.data.id}`;
+    }
+    return `/movie/${props.data.id}`;
+  };
 
-      <p className="h-fit w-32 mt-1 text-center self-center">
-        {truncatetext(props.data.title || props.data.name)}
-      </p>
-    </motion.div>
+  const link = generateLink();
+
+  return (
+    <a href={link} rel="noopener noreferrer">
+      <motion.div
+        className="relative h-fit m-3 flex flex-col hover:cursor-pointer"
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.98 }}
+        onClick={(e) => {
+          e.preventDefault(); // Prevent default navigation
+          router.push(link); // Use SPA navigation
+        }}
+      >
+        {/* Optional motion effect bar */}
+        <motion.div
+          className="absolute top-0 left-0 w-full h-1 bg-red-500 rounded"
+          initial={{ width: 0 }}
+          animate={{ width: "100%" }}
+          transition={{ duration: 0.3 }}
+        />
+        {/* Image or Placeholder */}
+        {props.data.poster_path || props.data.profile_path ? (
+          <img
+            className="border-2 border-white md:h-56 md:w-32 h-44 w-24"
+            src={`https://image.tmdb.org/t/p/w500${
+              props.data.poster_path || props.data.profile_path
+            }`}
+            alt={props.data.title || props.data.name}
+          />
+        ) : (
+          <div className="border-2 border-white md:h-56 md:w-32 h-44 w-24 flex flex-col justify-center items-center">
+            <p className="self-center w-full text-center">
+              Picture Not Available
+            </p>
+          </div>
+        )}
+
+        {/* Title or Name */}
+        <p className="h-fit md:w-32 md:text-base text-xs w-24 mt-1 text-center self-center">
+          {truncateText(props.data.title || props.data.name)}
+        </p>
+      </motion.div>
+    </a>
   );
 };
 

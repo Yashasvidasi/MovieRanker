@@ -188,7 +188,7 @@ const ActorPage = ({ params }: { params: any }) => {
 
   if (loading)
     return (
-      <div className="flex flex-col justify-center w-screen h-screen items-center mx-auto my-auto">
+      <div className="flex flex-col justify-center w-screen h-screen items-center mx-auto my-auto bg-black text-white">
         <img className="w-96 h-96" src="/assets/PYh.gif" alt="" />
         <div className="text-xl"> Loading </div>
       </div>
@@ -196,7 +196,7 @@ const ActorPage = ({ params }: { params: any }) => {
   if (!personalData) return <div>No personal data available</div>;
 
   return (
-    <div className="flex flex-row justify-between relative">
+    <div className="flex flex-row justify-between relative bg-black text-white">
       <SideBar />
       <div className="flex flex-col overflow-auto h-screen scrollbar scrollbar-track-transparent scrollbar-thumb-white">
         <div className="p-4 mt-6">

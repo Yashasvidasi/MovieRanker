@@ -70,6 +70,7 @@ export async function POST(req: NextRequest) {
           }
           console.log(object, user.WatchLater.list);
         } else if (type === "watch_history") {
+          console.log("????????????????", user);
           const newarr = user.WatchHistory.list.filter((item: any) => {
             return item.id === object.id;
           });
@@ -77,7 +78,7 @@ export async function POST(req: NextRequest) {
           if (newarr.length === 0 && object.otype) {
             user.WatchHistory.list.push(object);
           }
-          console.log(object, user.WatchHistory.list);
+          console.log("kaka", object, user.WatchHistory.list);
         } else if (type === "movie_ranking") {
           const newarr = user.MovieRanking.list.filter((item: any) => {
             return item.id === object.id;
@@ -109,7 +110,7 @@ export async function POST(req: NextRequest) {
             return item.id !== object.id;
           });
         } else if (type === "watch_history") {
-          user.MovieHistory.list = user.WatchHistory.list.filter(
+          user.WatchHistory.list = user.WatchHistory.list.filter(
             (item: any) => {
               return item.id !== object.id;
             }

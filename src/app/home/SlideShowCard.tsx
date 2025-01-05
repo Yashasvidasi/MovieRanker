@@ -14,6 +14,17 @@ const SlideShowCard = ({
   controlsbar: any;
 }) => {
   const router = useRouter();
+
+  // Generate the dynamic link
+  const generateLink = () => {
+    if (data.name) {
+      return data.gender ? `/person/${data.id}` : `/tv/${data.id}`;
+    }
+    return `/movie/${data.id}`;
+  };
+
+  const link = generateLink();
+
   return (
     <motion.div
       ref={ref}
@@ -28,15 +39,17 @@ const SlideShowCard = ({
 
       <div className="relative w-full h-full">
         <img
-          className="absolute right-0 top-0  w-[60%] h-full object-fill"
+          className="absolute right-0 top-0 md:w-[60%] h-full object-fill"
           src={`https://image.tmdb.org/t/p/w500/${data.backdrop_path}`}
           alt="Backdrop"
         />
-        <div className="absolute top-0 right-0 w-[60%] h-full bg-gradient-to-l from-transparent to-black bg-opacity-40"></div>
+        <div className="absolute top-0 right-0 w-[100%] md:w-[60%] h-full bg-black md:bg-gradient-to-l from-transparent to-black bg-opacity-70 md:bg-opacity-40"></div>
         <div className="relative flex flex-col w-full h-full p-10">
           <div className="flex flex-row justify-between h-full">
             <div className="flex flex-col w-full lg:w-1/2 h-full overflow-auto scrollbar-thin scrollbar-track-transparent scrollbar-thumb-transparent">
-              <div className="lg:text-3xl text-lg text-white">{data.title}</div>
+              <div className="lg:text-3xl text-lg text-white">
+                {data.title || data.name}
+              </div>
               <div className="lg:text-base text-sm text-white mt-2">
                 {data.overview}
               </div>
@@ -53,30 +66,26 @@ const SlideShowCard = ({
                   </div>
                 </div>
                 <div className="self-center ml-10 mt-3">
-                  <motion.div
-                    whileHover={{ scale: 1.04 }}
-                    onClick={() => {
-                      if (data.name) {
-                        if (data.gender) {
-                          router.push(`/person/${data.id}`);
-                        } else {
-                          router.push(`/tv/${data.id}`);
-                        }
-                      } else {
-                        router.push(`/movie/${data.id}`);
-                      }
-                    }}
-                    className="p-2 hover:cursor-pointer border-2 border-white text-lg rounded-2xl flex flex-row"
-                  >
-                    <div className="self-center mr-1.5">
-                      <img
-                        className="h-5 w-5"
-                        src="/assets/play.png"
-                        style={{ filter: "invert(100%)" }}
-                      />
-                    </div>
-                    <div className="self-center">Play</div>
-                  </motion.div>
+                  <a href={link} rel="noopener noreferrer">
+                    <motion.div
+                      whileHover={{ scale: 1.04 }}
+                      onClick={(e) => {
+                        e.preventDefault(); // Prevent default anchor behavior
+                        router.push(link); // Use SPA navigation
+                      }}
+                      className="p-2 hover:cursor-pointer border-2 border-white text-lg rounded-2xl flex flex-row"
+                    >
+                      <div className="self-center mr-1.5">
+                        <img
+                          className="h-5 w-5"
+                          src="/assets/play.png"
+                          style={{ filter: "invert(100%)" }}
+                          alt="Play Icon"
+                        />
+                      </div>
+                      <div className="self-center">Play</div>
+                    </motion.div>
+                  </a>
                 </div>
               </div>
             </div>

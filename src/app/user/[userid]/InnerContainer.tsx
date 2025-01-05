@@ -39,6 +39,17 @@ const InnerContainer = ({ params }: { params: any }) => {
     setsearchhistory,
   } = useContext(UserContext)!;
 
+  const truncatetext = (s: string | undefined) => {
+    if (s === undefined) {
+      return null;
+    }
+    if (s.length > 25) {
+      return s.slice(0, 24) + "...";
+    } else {
+      return s;
+    }
+  };
+
   const handlelogout = async () => {
     try {
       const response = await fetch(`/api/logout`, {
@@ -82,10 +93,6 @@ const InnerContainer = ({ params }: { params: any }) => {
   useEffect(() => {
     handleget();
   }, []);
-
-  useEffect(() => {
-    console.log(">>>>>", favorites);
-  }, [favorites]);
 
   // Sorting functions and limiting to top 10
   const sortedMovieRanking = movieranking
@@ -287,110 +294,80 @@ const InnerContainer = ({ params }: { params: any }) => {
               </motion.div>
             </div>
           </div>
-
-          {/* Movie Ranking Section */}
-          <div className="bg-gray-900 flex md:flex-row flex-col justify-between rounded-lg">
-            <div className="bg-gray-900 w-full p-6 rounded-lg shadow-md col-span-2">
-              <FaRankingStar className="text-3xl text-yellow-500 mb-4" />
-              <div className="flex flex-row justify-between">
-                <div className="text-xl md:text-2xl font-semibold">
-                  Top 10 Movies:
-                </div>
-                <motion.div
-                  className="text-xl font-semibold flex flex-row justify-between hover:cursor-pointer"
-                  onClick={() => {
-                    router.push(`/user/${params}/rankingmovies`);
-                  }}
-                  whileHover={{
-                    scale: 1.06,
-                  }}
-                >
-                  <p>Tier List</p>
-                  <FaArrowRight className="self-center ml-3" />
-                </motion.div>
+          <div className="flex flex-row gap-6 w-full">
+            {/* Movie Rankings Container */}
+            <div className="flex-1 bg-gray-900 p-6 rounded-lg shadow-md">
+              <div
+                className="flex items-center gap-2 hover:cursor-pointer mb-9"
+                onClick={() => {
+                  router.push(`/user/${params}/rankingmovies`);
+                }}
+              >
+                <FaRankingStar className="text-3xl text-yellow-500" />
+                <h2 className="text-2xl font-semibold">Top Movies</h2>
               </div>
-              <ul className="text-xl flex flex-col space-y-4 py-7">
+
+              <div className="flex flex-col gap-4">
                 {sortedMovieRanking?.map((item, index) => (
-                  <motion.div
-                    onClick={() => {
-                      router.push(`/movie/${item.id}`);
-                    }}
-                    whileHover={{
-                      scale: 1.04,
-                    }}
-                    className="w-full hover:cursor-pointer bg-slate-950 h-24 flex flex-row justify-between shadow-md p-2 shadow-black pt-3 rounded-lg"
+                  <a
                     key={index}
+                    href={`/movie/${item.id}`}
+                    className="w-full bg-slate-950 h-24 rounded-lg shadow-md shadow-black flex items-center justify-between p-4 hover:bg-slate-900 transition-colors"
                   >
-                    <div className="flex flex-row">
+                    <div className="flex items-center gap-3">
                       <img
                         src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-                        alt=""
+                        alt={item.title}
+                        className="h-16 w-auto object-cover"
                       />
-                      <div className="ml-3">{item.title}</div>
+                      <span className="font-medium">
+                        {truncatetext(item.title)}
+                      </span>
                     </div>
-                    {/* Placeholder for slider to set the rating */}
-                    <div className="text-nowrap self-end mb-3 mr-5">
+                    <span className="text-nowrap">
                       Rating: {item.rating === 0 ? "Not Rated" : item.rating}
-                    </div>
-                  </motion.div>
+                    </span>
+                  </a>
                 ))}
-              </ul>
+              </div>
             </div>
 
-            {/* Series Ranking Section */}
-            <div className="bg-gray-900 p-6 w-full rounded-lg shadow-md col-span-2">
-              <FaRankingStar className="text-3xl text-yellow-500 mb-4" />
-              <div className="flex flex-row justify-between">
-                <div className="text-xl md:text-2xl font-semibold">
-                  Top 10 Series:
-                </div>
-                <motion.div
-                  className="text-xl font-semibold flex flex-row justify-between hover:cursor-pointer"
-                  onClick={() => {
-                    router.push(`/user/${params}/rankingseries`);
-                  }}
-                  whileHover={{
-                    scale: 1.06,
-                  }}
-                >
-                  <p>Tier List</p>
-                  <FaArrowRight className="self-center ml-3" />
-                </motion.div>
+            {/* Series Rankings Container */}
+            <div className="flex-1 bg-gray-900 p-6 rounded-lg shadow-md">
+              <div
+                className="flex items-center gap-2 mb-9 hover:cursor-pointer "
+                onClick={() => {
+                  router.push(`/user/${params}/rankingmovies`);
+                }}
+              >
+                <FaRankingStar className="text-3xl text-blue-500" />
+                <h2 className="text-2xl font-semibold">Top Series</h2>
               </div>
-              <ul className="text-xl flex flex-col space-y-4 py-7">
+
+              <div className="flex flex-col gap-4">
                 {sortedSeriesRanking?.map((item, index) => (
-                  <motion.div
-                    onClick={() => {
-                      router.push(`/tv/${item.id}`);
-                    }}
-                    whileHover={{
-                      scale: 1.04,
-                    }}
-                    className="w-full hover:cursor-pointer bg-slate-950 h-24 flex flex-row justify-between shadow-md p-2 shadow-black pt-3 rounded-lg"
+                  <a
                     key={index}
+                    href={`/tv/${item.id}`}
+                    className="w-full bg-slate-950 h-24 rounded-lg shadow-md shadow-black flex items-center justify-between p-4 hover:bg-slate-900 transition-colors"
                   >
-                    <div className="flex flex-row">
+                    <div className="flex items-center gap-3">
                       <img
                         src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-                        alt=""
+                        alt={item.name}
+                        className="h-16 w-auto object-cover"
                       />
-                      <div className="ml-3">{item.name}</div>
+                      <span className="font-medium">
+                        {truncatetext(item.name)}
+                      </span>
                     </div>
-                    {/* Placeholder for slider to set the rating */}
-                    <div className="text-nowrap self-end mb-3 mr-5">
+                    <span className="text-nowrap">
                       Rating: {item.rating === 0 ? "Not Rated" : item.rating}
-                    </div>
-                  </motion.div>
+                    </span>
+                  </a>
                 ))}
-              </ul>
+              </div>
             </div>
-          </div>
-          <div className="bg-gray-900 flex flex-col justify-center items-center rounded-lg mt-10 py-10 w-full">
-            <div className="text-5xl mt-2 mb-10">STATISTICS</div>
-            <GenreChart
-              movieRanking={movieranking}
-              seriesRanking={seriesranking}
-            />
           </div>
         </div>
       </div>

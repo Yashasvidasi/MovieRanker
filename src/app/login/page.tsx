@@ -36,7 +36,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="flex h-screen flex-row items-center justify-between p-5">
+    <main className="flex h-screen flex-row items-center justify-between p-5 bg-black text-white">
       <div className="hidden md:flex flex-col justify-center w-1/2 h-full">
         <div className="relative w-full h-full">
           <img

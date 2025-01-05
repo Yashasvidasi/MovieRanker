@@ -1,6 +1,5 @@
 "use client";
-import React, { useEffect, useState, useRef, useContext } from "react";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useState, useRef } from "react";
 import SideBar from "@/components/SideBar";
 import Card from "./Card";
 import ReviewCard from "./ReviewCard";
@@ -47,6 +46,28 @@ const MoviePage = ({ params }: { params: any }) => {
   const [season, setseason] = useState(1);
   const [episode, setepisode] = useState(1);
   const [totalseasons, settotalseasons] = useState<any[]>([]);
+  const [otherrec, setotherrec] = useState([]);
+
+  useEffect(() => {
+    const fetchMatrix = async () => {
+      const response = await fetch("/api/recommend/tv", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: tvid }),
+      });
+
+      const result = await response.json();
+      console.log(result);
+      if (result.recommendations.length === 0) {
+        console.log("ererererere");
+      }
+      setreccomendation(result.recommendations);
+    };
+
+    fetchMatrix();
+  }, []);
 
   const truncateText = (text: string, wordLimit: number = 150) => {
     const words = text.split(/\s+/);
@@ -112,7 +133,7 @@ const MoviePage = ({ params }: { params: any }) => {
           type: "watch_history",
           object: obj,
           id: nid,
-          operation: "put",
+          operation: op,
         }),
       });
 
@@ -240,7 +261,7 @@ const MoviePage = ({ params }: { params: any }) => {
           setMovie(movieData);
           settotalseasons(result.payload_data.seasons);
           setBackdrops(backdropsData);
-          setreccomendation(recc);
+          setotherrec(recc);
           setreviews(revs);
           setcast(cast);
           console.log(revs);
@@ -308,12 +329,34 @@ const MoviePage = ({ params }: { params: any }) => {
   const [showepisodes, setshowepisodes] = useState(false);
 
   const handlecc = () => {
-    postwatchhistory("put");
+    const obj = {
+      id: params.tvid,
+      title: movie!.name,
+      poster_path: movie!.poster_path,
+      otype: "tv",
+    };
+
+    // Get the existing WatchHistory from localStorage or initialize an empty array if not found
+    const watchHistory = JSON.parse(
+      localStorage.getItem("WatchHistory") || "[]"
+    );
+
+    // Check if the movie is already in the WatchHistory (based on 'id')
+    const isAlreadyInHistory = watchHistory.some(
+      (item: any) => item.id === obj.id
+    );
+
+    // Append the new object to the list only if it's not already present
+    if (!isAlreadyInHistory) {
+      watchHistory.push(obj);
+      // Save the updated list back to localStorage
+      localStorage.setItem("WatchHistory", JSON.stringify(watchHistory));
+    }
   };
 
   if (loading)
     return (
-      <div className="flex flex-col justify-center w-screen h-screen items-center mx-auto my-auto">
+      <div className="flex flex-col justify-center w-screen h-screen items-center mx-auto my-auto bg-black text-white">
         <img className="w-96 h-96" src="/assets/PYh.gif" alt="" />
         <div className="text-xl"> Loading </div>
       </div>
@@ -322,7 +365,7 @@ const MoviePage = ({ params }: { params: any }) => {
   if (!movie) return <div>No movie data available</div>;
 
   return (
-    <div className="flex flex-row justify-between relative">
+    <div className="flex flex-row justify-between relative bg-black text-white">
       <SideBar />
       <div className="flex flex-col overflow-auto h-screen scrollbar scrollbar-track-transparent scrollbar-thumb-white">
         <div className="p-4 mt-6">
@@ -459,6 +502,7 @@ const MoviePage = ({ params }: { params: any }) => {
                         onClick={() => {
                           if (!isUpdatingcomp) {
                             postRanking("remove", 0);
+                            postwatchhistory("remove");
                           }
                         }}
                         className={`md:ml-10 mt-5 md:mt-0 border-2 border-white self-center p-2 rounded-lg text-xl flex flex-row justify-between ${
@@ -480,6 +524,7 @@ const MoviePage = ({ params }: { params: any }) => {
                         onClick={() => {
                           if (!isUpdatingcomp) {
                             postRanking("put", 0);
+                            postwatchhistory("put");
                           }
                         }}
                         className={`md:ml-10 mt-5 md:mt-0 border-2 border-white self-center p-2 rounded-lg text-xl flex flex-row justify-between ${
@@ -529,11 +574,17 @@ const MoviePage = ({ params }: { params: any }) => {
             </div>
           )}
 
-          <div ref={scrollToRef} className="h-[600px] w-full  mb-12">
+          <div
+            ref={scrollToRef}
+            className="h-[600px] w-full  mb-12"
+            onClick={handlecc}
+          >
             {
               <iframe
                 className="w-full h-full"
-                src={`https://vidsrc.xyz/embed/tv/${params.tvid}/${season}/${episode}`}
+                src={`https://vidsrc.dev/embed/tv/${params.tvid}/${season}/${episode}`}
+                sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"
+                referrerPolicy="no-referrer"
                 allowFullScreen
               />
             }
@@ -617,17 +668,30 @@ const MoviePage = ({ params }: { params: any }) => {
             </motion.div>
           </div>
 
-          {reccomendation.length > 0 && (
+          {reccomendation.length > 0 ? (
             <div className="mb-10 flex flex-col">
               <h2 className="text-xl sm:text-2xl font-semibold mb-5">
-                If you Liked {movie.name} then try:
+                If you Liked {movie.name} then try (from ML Model):
               </h2>
-              <div className="flex flex-row flex-wrap gap-3">
+              <div className="flex flex-row flex-wrap md:justify-start justify-center gap-3">
                 {reccomendation.map((item, index) => (
                   <Card key={index} data={item} />
                 ))}
               </div>
             </div>
+          ) : (
+            otherrec.length > 0 && (
+              <div className="mb-10 flex flex-col">
+                <h2 className="text-xl sm:text-2xl font-semibold mb-5">
+                  If you Liked {movie.name} then try (from internet):
+                </h2>
+                <div className="flex flex-row flex-wrap md:justify-start justify-center gap-3">
+                  {otherrec.map((item, index) => (
+                    <Card key={index} data={item} />
+                  ))}
+                </div>
+              </div>
+            )
           )}
           {reviews.length > 0 && (
             <div className="mb-10 flex flex-col">

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const fetchmoviespopular = async () => {
-  const url = "https://api.themoviedb.org/3/trending/movie/week?language=en-US";
+  const url = "https://api.themoviedb.org/3/trending/all/week?language=en-US";
   const options = {
     method: "GET",
     headers: {

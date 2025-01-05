@@ -1,6 +1,6 @@
 "use client";
-import React, { Component, useContext } from "react";
-import { motion, useAnimation } from "framer-motion";
+import React from "react";
+import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 const Card = (props: {
@@ -26,44 +26,49 @@ const Card = (props: {
 
   const router = useRouter();
 
+  // Generate the dynamic URL based on data
+  const generateUrl = () => {
+    if (props.data.name) {
+      return props.data.gender
+        ? `/person/${props.data.id}`
+        : `/tv/${props.data.id}`;
+    }
+    return `/movie/${props.data.id}`;
+  };
+
   return (
     <motion.div
       className="relative h-fit flex flex-col hover:cursor-pointer"
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.98 }}
-      onClick={() => {
-        if (props.data.name) {
-          if (props.data.gender) {
-            router.push(`/person/${props.data.id}`);
-          } else {
-            router.push(`/tv/${props.data.id}`);
-          }
-        } else {
-          router.push(`/movie/${props.data.id}`);
-        }
-      }}
+      onClick={() => router.push(generateUrl())} // Navigate normally on click
     >
       <motion.div
         className="absolute top-0 left-0 w-full h-1 bg-red-500 rounded"
         initial={{ width: 0 }}
       />
-      {props.data.poster_path || props.data.profile_path ? (
-        <img
-          className="border-2 border-white h-56 w-32"
-          src={`https://image.tmdb.org/t/p/w500${
-            props.data.poster_path || props.data.profile_path
-          }`}
-          alt={props.data.title || props.data.name}
-        />
-      ) : (
-        <div className="border-2 border-white h-56 w-32 flex flex-col justify-center items-center">
-          <p className="self-center w-full text-center">
-            Picture Not Available
-          </p>
-        </div>
-      )}
-
-      <p className="h-fit w-32 mt-1 text-center self-center">
+      <a
+        href={generateUrl()} // Dynamic URL
+        rel="noopener noreferrer" // Security and performance
+        onClick={(e) => e.stopPropagation()} // Prevent click from triggering `onClick` above
+      >
+        {props.data.poster_path || props.data.profile_path ? (
+          <img
+            className="border-2 border-white md:h-56 md:w-32 h-44 w-24"
+            src={`https://image.tmdb.org/t/p/w500${
+              props.data.poster_path || props.data.profile_path
+            }`}
+            alt={props.data.title || props.data.name}
+          />
+        ) : (
+          <div className="border-2 border-white md:h-56 md:w-32 h-44 w-24 flex flex-col justify-center items-center">
+            <p className="self-center w-full text-center">
+              Picture Not Available
+            </p>
+          </div>
+        )}
+      </a>
+      <p className="h-fit md:w-32 md:text-base text-xs w-24 mt-1 text-center self-center">
         {truncatetext(props.data.title || props.data.name)}
       </p>
     </motion.div>

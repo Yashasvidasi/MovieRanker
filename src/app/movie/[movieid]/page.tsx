@@ -41,6 +41,25 @@ const MoviePage = ({ params }: { params: any }) => {
   const [rank, setrank] = useState<any>(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isUpdatingcomp, setIsUpdatingcomp] = useState(false);
+  const [otherrec, setotherrec] = useState([]);
+
+  useEffect(() => {
+    const fetchMatrix = async () => {
+      const response = await fetch("/api/recommend/movie", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: movieid }),
+      });
+
+      const result = await response.json();
+      console.log(">>>>>", result);
+      setreccomendation(result.recommendations);
+    };
+
+    fetchMatrix();
+  }, []);
 
   const truncateText = (text: string, wordLimit: number = 150) => {
     const words = text.split(/\s+/);
@@ -71,7 +90,6 @@ const MoviePage = ({ params }: { params: any }) => {
       });
 
       const result = await response.json();
-      console.log(result, wid);
       if (result.success === true) {
         if (operation === "put") {
           setwid(true);
@@ -96,6 +114,7 @@ const MoviePage = ({ params }: { params: any }) => {
       poster_path: movie!.poster_path,
       otype: "movie",
     };
+    console.log("lasldlasd", obj);
     try {
       const response = await fetch(`/api/updatedetails`, {
         method: "POST",
@@ -106,7 +125,7 @@ const MoviePage = ({ params }: { params: any }) => {
           type: "watch_history",
           object: obj,
           id: nid,
-          operation: "put",
+          operation: op,
         }),
       });
 
@@ -208,7 +227,8 @@ const MoviePage = ({ params }: { params: any }) => {
           const cast = result.payload_cast;
           setMovie(movieData);
           setBackdrops(backdropsData);
-          setreccomendation(recc);
+          setotherrec(recc);
+
           setreviews(revs);
           setcast(cast);
           console.log(revs);
@@ -264,6 +284,7 @@ const MoviePage = ({ params }: { params: any }) => {
 
   const handlescroll = () => {
     handlecc();
+    console.log("awasdasdasdasd");
     if (scrollToRef.current) {
       scrollToRef.current.scrollIntoView({
         behavior: "smooth",
@@ -273,7 +294,29 @@ const MoviePage = ({ params }: { params: any }) => {
   };
 
   const handlecc = () => {
-    postwatchhistory("put");
+    const obj = {
+      id: params.movieid,
+      title: movie!.title,
+      poster_path: movie!.poster_path,
+      otype: "movie",
+    };
+
+    // Get the existing WatchHistory from localStorage or initialize an empty array if not found
+    const watchHistory = JSON.parse(
+      localStorage.getItem("WatchHistory") || "[]"
+    );
+
+    // Check if the movie is already in the WatchHistory (based on 'id')
+    const isAlreadyInHistory = watchHistory.some(
+      (item: any) => item.id === obj.id
+    );
+
+    // Append the new object to the list only if it's not already present
+    if (!isAlreadyInHistory) {
+      watchHistory.push(obj);
+      // Save the updated list back to localStorage
+      localStorage.setItem("WatchHistory", JSON.stringify(watchHistory));
+    }
   };
 
   const handleConfirm = () => {
@@ -305,7 +348,7 @@ const MoviePage = ({ params }: { params: any }) => {
 
   if (loading)
     return (
-      <div className="flex flex-col justify-center w-screen h-screen items-center mx-auto my-auto">
+      <div className="flex flex-col justify-center w-screen h-screen items-center mx-auto my-auto bg-black text-white">
         <img className="w-96 h-96" src="/assets/PYh.gif" alt="" />
         <div className="text-xl"> Loading </div>
       </div>
@@ -314,7 +357,7 @@ const MoviePage = ({ params }: { params: any }) => {
   if (!movie) return <div>No movie data available</div>;
 
   return (
-    <div className="flex flex-row justify-between relative">
+    <div className="flex flex-row justify-between relative bg-black text-white">
       <SideBar />
       <div className="flex flex-col overflow-auto h-screen scrollbar scrollbar-track-transparent scrollbar-thumb-white">
         <div className="p-4 mt-6">
@@ -451,6 +494,7 @@ const MoviePage = ({ params }: { params: any }) => {
                         onClick={() => {
                           if (!isUpdatingcomp) {
                             postRanking("remove", 0);
+                            postwatchhistory("remove");
                           }
                         }}
                         className={`md:ml-10 mt-5 md:mt-0 border-2 border-white self-center p-2 rounded-lg text-xl flex flex-row justify-between ${
@@ -470,6 +514,7 @@ const MoviePage = ({ params }: { params: any }) => {
                         onClick={() => {
                           if (!isUpdatingcomp) {
                             postRanking("put", 0);
+                            postwatchhistory("put");
                           }
                         }}
                         className={`md:ml-10 mt-5 md:mt-0 border-2 border-white self-center p-2 rounded-lg text-xl flex flex-row justify-between ${
@@ -504,7 +549,7 @@ const MoviePage = ({ params }: { params: any }) => {
           {backdrops.length > 0 && (
             <div className="mb-16 flex flex-col">
               <h2 className="text-xl sm:text-2xl font-semibold mb-5">Images</h2>
-              <div className="flex flex-row flex-wrap gap-3">
+              <div className="flex flex-row flex-wrap md:justify-start justify-center gap-3">
                 {backdrops.slice(0, 10).map((backdrop, index) => (
                   <img
                     key={index}
@@ -517,34 +562,44 @@ const MoviePage = ({ params }: { params: any }) => {
             </div>
           )}
 
-          <div ref={scrollToRef} className="h-[600px] w-full  mb-12">
-            {/*<iframe
+          <div
+            ref={scrollToRef}
+            onClick={handlecc}
+            className="md:h-[600px] h-[250px] w-full  mb-12"
+          >
+            <iframe
               className="w-full h-full"
-              src={`https://multiembed.mov/?video_id=${params.movieid}&tmdb=1`}
+              src={`https://vidsrc.dev/embed/movie/${params.movieid}`}
+              sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"
+              referrerPolicy="no-referrer"
               allowFullScreen
-            />*/}
-
-            {
-              <iframe
-                className="w-full h-full"
-                onClick={handlecc}
-                src={`https://vidsrc.xyz/embed/movie/${params.movieid}`}
-                allowFullScreen
-              />
-            }
+            />
           </div>
 
-          {reccomendation.length > 0 && (
+          {reccomendation.length > 0 ? (
             <div className="mb-10 flex flex-col">
               <h2 className="text-xl sm:text-2xl font-semibold mb-5">
-                If you Liked {movie.title} then try:
+                If you Liked {movie.title} then try (from ML Model):
               </h2>
-              <div className="flex flex-row flex-wrap gap-3">
+              <div className="flex flex-row flex-wrap md:justify-start justify-center gap-3">
                 {reccomendation.map((item, index) => (
                   <Card key={index} data={item} />
                 ))}
               </div>
             </div>
+          ) : (
+            otherrec.length > 0 && (
+              <div className="mb-10 flex flex-col">
+                <h2 className="text-xl sm:text-2xl font-semibold mb-5">
+                  If you Liked {movie.title} then try (from internet):
+                </h2>
+                <div className="flex flex-row flex-wrap md:justify-start justify-center gap-3">
+                  {otherrec.map((item, index) => (
+                    <Card key={index} data={item} />
+                  ))}
+                </div>
+              </div>
+            )
           )}
           {reviews.length > 0 && (
             <div className="mb-10 flex flex-col">

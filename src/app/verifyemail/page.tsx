@@ -46,7 +46,7 @@ const Page = ({ params }: { params: any }) => {
   };
 
   return (
-    <main className="w-screen h-screen flex flex-col justify-center items-center">
+    <main className="w-screen h-screen flex flex-col justify-center items-center bg-black text-white">
       <div className="text-4xl mb-10">Email Verification</div>
       <button
         className="border border-white hover:border-black rounded-lg p-2 hover:bg-slate-300 hover:text-black"

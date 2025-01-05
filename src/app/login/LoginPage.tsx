@@ -80,7 +80,7 @@ function LoginPage({ setlogin }: { setlogin: (arg0: boolean) => void }) {
 
   return (
     <div>
-      <div className="p-12 px-24 flex flex-col">
+      <div className="p-12 px-24 flex flex-col bg-black text-white">
         <h2 className="text-2xl font-semibold mb-4">Log In</h2>
         <div className="flex flex-col space-y-4">
           {/* email or Email Input */}

@@ -30,7 +30,9 @@ export function middleware(request: NextRequest) {
           },
         };
         const response = await fetch(
-          `/api/gettoken2?cachebuster=${new Date().getTime()}`,
+          `${
+            request.nextUrl.origin
+          }/api/gettoken2?cachebuster=${new Date().getTime()}`,
           options
         );
         const data = await response.json();

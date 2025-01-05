@@ -96,7 +96,7 @@ const Filter = () => {
   }, [page, initialLoad]);
 
   return (
-    <div className="relative flex flex-row w-screen h-screen bg-black overflow-hidden">
+    <div className="relative flex flex-row w-screen h-screen bg-black overflow-hidden text-white">
       <SideBar />
       <div className="w-full flex flex-col">
         <FilterBar handlefilter={handleSearch} />

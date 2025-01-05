@@ -11,6 +11,7 @@ const Card = (props: {
     poster_path: any;
     title: any;
     name: any;
+    otype: any;
   };
 }) => {
   const truncatetext = (s: string | undefined) => {
@@ -26,12 +27,10 @@ const Card = (props: {
 
   const router = useRouter();
 
-  // Generate the dynamic URL based on the data
+  // Generate the dynamic URL based on data
   const generateUrl = () => {
-    if (props.data.name) {
-      return props.data.gender
-        ? `/person/${props.data.id}`
-        : `/tv/${props.data.id}`;
+    if (props.data.otype == "tv") {
+      return `/tv/${props.data.id}`;
     }
     return `/movie/${props.data.id}`;
   };
@@ -50,7 +49,7 @@ const Card = (props: {
       <a
         href={generateUrl()} // Dynamic URL
         rel="noopener noreferrer" // Security and performance
-        onClick={(e) => e.stopPropagation()} // Prevent click from triggering parent `onClick`
+        onClick={(e) => e.stopPropagation()} // Prevent click from triggering `onClick` above
       >
         {props.data.poster_path || props.data.profile_path ? (
           <img
@@ -68,8 +67,7 @@ const Card = (props: {
           </div>
         )}
       </a>
-
-      <p className="h-fit md:w-28 w-20 mt-1 text-center self-center md:text-base text-xs">
+      <p className="h-fit md:w-32 md:text-base text-xs w-24 mt-1 text-center self-center">
         {truncatetext(props.data.title || props.data.name)}
       </p>
     </motion.div>
