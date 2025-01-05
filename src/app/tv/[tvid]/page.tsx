@@ -260,7 +260,10 @@ const MoviePage = ({ params }: { params: any }) => {
           const revs = result.payload_revs;
           const cast = result.payload_cast;
           setMovie(movieData);
-          settotalseasons(result.payload_data.seasons);
+          const filteredSeasons = result.payload_data.seasons.filter(
+            (season: { air_date: null }) => season.air_date !== null
+          );
+          settotalseasons(filteredSeasons);
           setBackdrops(backdropsData);
           setotherrec(recc);
           setreviews(revs);
