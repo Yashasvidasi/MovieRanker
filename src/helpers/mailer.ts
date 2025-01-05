@@ -42,7 +42,7 @@ export const sendEmail = async ({
     });
 
     const mailoption = {
-      from: "ycoinaccounts@ycoin.ai", // sender address
+      from: "ymoviesbyyashasvi@yash.mit", // sender address
       to: email, // list of receivers
       subject:
         emailType === "VERIFY" ? "Verify Your Email" : "Reset Your Password", // Subject line
