@@ -5,6 +5,7 @@ import SideBar from "@/components/SideBar";
 
 const Page = () => {
   const [watchHistory, setWatchHistory] = useState<any[]>([]);
+  const [msg, setmsg] = useState("loading...");
 
   useEffect(() => {
     // Retrieve the WatchHistory from localStorage
@@ -13,6 +14,9 @@ const Page = () => {
     // Parse the history and update the state
     if (storedHistory) {
       setWatchHistory(JSON.parse(storedHistory));
+      if (JSON.parse(storedHistory).length === 0) {
+        setmsg("Nothing here");
+      }
     }
   }, []);
 
@@ -31,7 +35,7 @@ const Page = () => {
               </div>
             ))
           ) : (
-            <p className="text-center text-lg">loading...</p>
+            <p className="text-center text-lg">{msg}</p>
           )}
         </div>
       </div>

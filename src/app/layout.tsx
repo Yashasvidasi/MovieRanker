@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Y-Movies",
   description: "Watch any movies or series",
   icons: {
-    icon: "/assets/logo.png",
+    icon: "/assets/favicon.png",
   },
 };
 
