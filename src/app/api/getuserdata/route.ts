@@ -10,7 +10,6 @@ connect();
 export async function GET(req: NextRequest) {
   try {
     const token = req.cookies.get("token")?.value || "";
-    console.log(token);
 
     if (token === "") {
       const response = NextResponse.json(
@@ -39,7 +38,6 @@ export async function GET(req: NextRequest) {
       );
       return response;
     } else {
-      console.log(user);
       const response = NextResponse.json(
         {
           message: "User found",

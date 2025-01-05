@@ -40,7 +40,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
       );
     }
   } catch (err) {
-    console.log(err);
     return NextResponse.json(
       {
         error: err,

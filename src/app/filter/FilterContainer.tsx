@@ -12,10 +12,6 @@ const FilterContainer = forwardRef<HTMLDivElement>((props, ref) => {
     setpage(newPage);
   };
 
-  useEffect(() => {
-    console.log(filtercontent);
-  }, [filtercontent]);
-
   return (
     <div
       ref={ref}

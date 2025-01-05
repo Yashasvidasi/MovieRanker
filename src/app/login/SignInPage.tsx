@@ -64,7 +64,6 @@ function SignInPage({ setlogin }: { setlogin: (arg0: boolean) => void }) {
       setreppassword("");
 
       if (response.status === 500) {
-        console.log("Server error");
         return;
       }
     } catch (error) {

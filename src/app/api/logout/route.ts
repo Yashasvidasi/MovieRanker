@@ -19,6 +19,12 @@ export async function GET(req: NextRequest) {
 
     return response;
   } catch (err) {
-    console.log(err);
+    const response = NextResponse.json(
+      {
+        error: err,
+      },
+      { status: 500 }
+    );
+    return response;
   }
 }

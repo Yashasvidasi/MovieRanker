@@ -63,7 +63,6 @@ const Filter = () => {
   const handleSearch = async () => {
     setpage(1);
     const content = await fetchFilteredMovies(1);
-    console.log(content);
 
     if (content.total_results === 0) {
       setfiltercontent(notfound);
@@ -79,7 +78,7 @@ const Filter = () => {
 
   const handlepagechange = async () => {
     const content = await fetchFilteredMovies(page);
-    console.log(content);
+
     if (content === null) {
       return;
     }

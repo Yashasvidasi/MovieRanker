@@ -11,7 +11,6 @@ export async function POST(req: NextRequest) {
     const body = await req.json(); // Parse the request body
     const { type, object, operation } = body;
     const token = req.cookies.get("token")?.value || "";
-    console.log(token);
 
     if (token === "") {
       const response = NextResponse.json(
@@ -31,10 +30,8 @@ export async function POST(req: NextRequest) {
 
     if (user) {
       if (type === "searchpost") {
-        console.log(object);
         if (object.query !== "") {
           const newarr = user.SearchHistory.list.filter((item: any) => {
-            console.log(item);
             return (
               item.query === object.query &&
               item.type === object.type &&
@@ -47,7 +44,6 @@ export async function POST(req: NextRequest) {
           }
         }
       } else if (type === "searchpostdelete") {
-        console.log(object);
         if (object.query !== "") {
           const newarr = user.SearchHistory.list.filter((item: any) => {
             return (
@@ -68,9 +64,7 @@ export async function POST(req: NextRequest) {
           if (newarr.length === 0) {
             user.WatchLater.list.push(object);
           }
-          console.log(object, user.WatchLater.list);
         } else if (type === "watch_history") {
-          console.log("????????????????", user);
           const newarr = user.WatchHistory.list.filter((item: any) => {
             return item.id === object.id;
           });
@@ -78,7 +72,6 @@ export async function POST(req: NextRequest) {
           if (newarr.length === 0 && object.otype) {
             user.WatchHistory.list.push(object);
           }
-          console.log("kaka", object, user.WatchHistory.list);
         } else if (type === "movie_ranking") {
           const newarr = user.MovieRanking.list.filter((item: any) => {
             return item.id === object.id;

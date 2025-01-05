@@ -10,11 +10,9 @@ export async function connect() {
     });
 
     connection.on("error", (err) => {
-      console.log("Database Disconnected");
-      console.log(err);
       process.exit();
     });
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 }

@@ -17,7 +17,6 @@ const fetchmovies = async (
 
   const response = await fetch(url, options);
   const data = await response.json();
-  console.log(data);
   return data;
 };
 
@@ -27,10 +26,9 @@ export async function POST(req: NextRequest) {
   const queryString = sterm.split(" ").join("%20");
   const adultString = adult ? "true" : "false";
   const typeString = type === "series" ? "tv" : type;
-  console.log(queryString, adultString, type, page);
+
   try {
     const data = await fetchmovies(queryString, adultString, typeString, page);
-    console.log(data);
     const response = NextResponse.json(
       {
         payload: data,
@@ -39,7 +37,6 @@ export async function POST(req: NextRequest) {
     );
     return response;
   } catch (err) {
-    console.log(err);
     const response = NextResponse.json(
       {
         error: err,

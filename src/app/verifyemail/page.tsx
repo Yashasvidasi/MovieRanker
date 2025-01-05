@@ -31,7 +31,7 @@ const Page = ({ params }: { params: any }) => {
 
       if (data.success === true) {
         notifySuccess();
-        console.log();
+
         setTimeout(() => {
           router.replace("/login");
         }, 5000);

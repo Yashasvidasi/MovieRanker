@@ -76,7 +76,7 @@ const InnerContainer = ({ params }: { params: any }) => {
         },
       });
       const data = await response.json();
-      console.log(data);
+
       if (data.success) {
         setName(data.name);
         setfavorites(data.favorite_actors);

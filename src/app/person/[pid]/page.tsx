@@ -84,7 +84,6 @@ const ActorPage = ({ params }: { params: any }) => {
           setPersonalData(personalData);
           setMovies(movies);
           setTvShows(tvShows);
-          console.log(personalData);
         } catch (err) {
           console.error("Fetch Error:", err);
         } finally {
@@ -118,15 +117,13 @@ const ActorPage = ({ params }: { params: any }) => {
       });
 
       const result = await response.json();
-      console.log(result, fid);
+
       if (result.success === true) {
         if (operation === "put") {
           setfid(true);
         } else {
           setfid(false);
         }
-      } else {
-        console.log("failed");
       }
     } catch (err) {
       console.error("Fetch Error:", err);
@@ -148,7 +145,7 @@ const ActorPage = ({ params }: { params: any }) => {
         options
       );
       const data = await response.json();
-      console.log(data);
+
       if (data.id !== "not_logged_in") {
         setnid(data.id);
       }
@@ -171,7 +168,6 @@ const ActorPage = ({ params }: { params: any }) => {
         const result = await response.json();
 
         if (result.success) {
-          console.log(result);
           if (result.favorite_actor) {
             setfid(true);
           } else {
@@ -179,7 +175,7 @@ const ActorPage = ({ params }: { params: any }) => {
           }
         }
       } catch (err) {
-        console.log(err);
+        throw err;
       }
     };
 

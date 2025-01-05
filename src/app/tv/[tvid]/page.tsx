@@ -59,10 +59,7 @@ const MoviePage = ({ params }: { params: any }) => {
       });
 
       const result = await response.json();
-      console.log(result);
-      if (result.recommendations.length === 0) {
-        console.log("ererererere");
-      }
+
       setreccomendation(result.recommendations);
     };
 
@@ -98,15 +95,13 @@ const MoviePage = ({ params }: { params: any }) => {
       });
 
       const result = await response.json();
-      console.log(result, wid);
+
       if (result.success === true) {
         if (operation === "put") {
           setwid(true);
         } else {
           setwid(false);
         }
-      } else {
-        console.log("failed");
       }
     } catch (err) {
       console.error("Fetch Error:", err);
@@ -205,7 +200,7 @@ const MoviePage = ({ params }: { params: any }) => {
         options
       );
       const data = await response.json();
-      console.log(data);
+
       if (data.id !== "not_logged_in") {
         setnid(data.id);
       }
@@ -264,11 +259,11 @@ const MoviePage = ({ params }: { params: any }) => {
             (season: { air_date: null }) => season.air_date !== null
           );
           settotalseasons(filteredSeasons);
+
           setBackdrops(backdropsData);
           setotherrec(recc);
           setreviews(revs);
           setcast(cast);
-          console.log(revs);
         }
 
         const watchHistory = JSON.parse(
@@ -309,7 +304,6 @@ const MoviePage = ({ params }: { params: any }) => {
         const result = await response.json();
 
         if (result.success) {
-          console.log(result);
           if (result.watch_later) {
             setwid(true);
           } else {
@@ -326,7 +320,7 @@ const MoviePage = ({ params }: { params: any }) => {
           }
         }
       } catch (err) {
-        console.log(err);
+        throw err;
       }
     };
 
@@ -632,10 +626,13 @@ const MoviePage = ({ params }: { params: any }) => {
             >
               <div
                 className="hover:cursor-pointer text-xl rounded-lg font-semibold hover:text-blue-500 border border-white p-2"
-                onClick={() => setshowseasons(!showseasons)}
+                onClick={() => {
+                  setshowseasons(!showseasons);
+                }}
               >
-                Season: {totalseasons[season].name}
+                Season: {totalseasons[season - 1].name}
               </div>
+
               {showseasons && (
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -648,7 +645,7 @@ const MoviePage = ({ params }: { params: any }) => {
                       key={index}
                       className="hover:cursor-pointer hover:bg-slate-950 p-3 bg-slate-700 rounded text-lg"
                       onClick={() => {
-                        setseason(index);
+                        setseason(index + 1);
                         setshowseasons(false);
                         setshowepisodes(true); // Show episodes when season is selected
                       }}
@@ -681,7 +678,7 @@ const MoviePage = ({ params }: { params: any }) => {
                   className="mt-2 flex flex-col rounded-lg p-2 shadow-inner absolute z-50 bg-slate-700 top-14 h-60 overflow-auto scrollbar-thin scrollbar-track-transparent"
                 >
                   {Array.from(
-                    { length: totalseasons[season].episode_count },
+                    { length: totalseasons[season - 1].episode_count },
                     (_, index) => (
                       <div
                         key={index}

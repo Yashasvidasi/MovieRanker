@@ -24,8 +24,6 @@ const MovieSlideshow = () => {
         transition: { duration: 5.8, ease: "easeIn" },
       });
       setIsLoading(false);
-    } else {
-      console.log("error");
     }
   };
 

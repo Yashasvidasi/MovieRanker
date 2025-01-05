@@ -11,9 +11,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json(); // Parse the request body
     const { email, password } = body;
-    console.log(body);
     const user = await User.findOne({ email: email });
-    console.log(user);
 
     if (!user) {
       return NextResponse.json(
@@ -40,8 +38,6 @@ export async function POST(req: NextRequest) {
       username: user.username,
       email: user.email,
     };
-
-    console.log(user._id);
 
     const token = jwt.sign(tokenData, process.env.TOKEN_SECRET!, {
       expiresIn: "4h",

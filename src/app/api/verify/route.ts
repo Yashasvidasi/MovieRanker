@@ -10,7 +10,6 @@ export async function POST(req: NextRequest) {
   try {
     const reqbody = await req.json();
     const { token } = reqbody;
-    console.log(token);
 
     const user = await User.findOne({
       verifyToken: token,

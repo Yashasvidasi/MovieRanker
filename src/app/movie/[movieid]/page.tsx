@@ -54,7 +54,7 @@ const MoviePage = ({ params }: { params: any }) => {
       });
 
       const result = await response.json();
-      console.log(">>>>>", result);
+
       setreccomendation(result.recommendations);
     };
 
@@ -96,8 +96,6 @@ const MoviePage = ({ params }: { params: any }) => {
         } else {
           setwid(false);
         }
-      } else {
-        console.log("failed");
       }
     } catch (err) {
       console.error("Fetch Error:", err);
@@ -114,7 +112,7 @@ const MoviePage = ({ params }: { params: any }) => {
       poster_path: movie!.poster_path,
       otype: "movie",
     };
-    console.log("lasldlasd", obj);
+
     try {
       const response = await fetch(`/api/updatedetails`, {
         method: "POST",
@@ -197,7 +195,7 @@ const MoviePage = ({ params }: { params: any }) => {
         options
       );
       const data = await response.json();
-      console.log(data);
+
       if (data.id !== "not_logged_in") {
         setnid(data.id);
       }
@@ -231,7 +229,6 @@ const MoviePage = ({ params }: { params: any }) => {
 
           setreviews(revs);
           setcast(cast);
-          console.log(revs);
         } catch (err) {
           console.error("Fetch Error:", err);
           setError("Error fetching data");
@@ -258,7 +255,6 @@ const MoviePage = ({ params }: { params: any }) => {
         const result = await response.json();
 
         if (result.success) {
-          console.log(result);
           if (result.watch_later) {
             setwid(true);
           } else {
@@ -275,7 +271,7 @@ const MoviePage = ({ params }: { params: any }) => {
           }
         }
       } catch (err) {
-        console.log(err);
+        throw err;
       }
     };
 
@@ -284,7 +280,7 @@ const MoviePage = ({ params }: { params: any }) => {
 
   const handlescroll = () => {
     handlecc();
-    console.log("awasdasdasdasd");
+
     if (scrollToRef.current) {
       scrollToRef.current.scrollIntoView({
         behavior: "smooth",

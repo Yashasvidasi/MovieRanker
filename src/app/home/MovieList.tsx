@@ -43,10 +43,8 @@ const MovieList = () => {
       return data.payload;
     } catch (err: any) {
       if (retries > 0) {
-        console.log(`Retrying... (${3 - retries + 1})`);
         return fetchone(uri, page, retries - 1);
       } else {
-        console.log(err);
         throw err;
       }
     }
@@ -228,7 +226,6 @@ const MovieList = () => {
 
   useEffect(() => {
     if (inView) {
-      console.log("inview");
       increasepage();
     }
   }, [inView]);

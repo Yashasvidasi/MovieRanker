@@ -39,7 +39,6 @@ const getgenre = async (
   }
 
   const url = `https://api.themoviedb.org/3/discover/${type}?include_adult=${adultS}${langS}&page=${page}${releaseS}${genreS}&sort_by=${sort}.${order}`;
-  console.log(url);
   const options = {
     method: "GET",
     headers: {

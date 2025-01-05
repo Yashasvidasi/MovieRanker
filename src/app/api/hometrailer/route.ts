@@ -13,7 +13,7 @@ const fetchmoviespopular = async (type: string, id: number) => {
     return null;
   }
   const url = `https://api.themoviedb.org/3/${type}/${id}/videos?language=en-US`;
-  console.log(type, id);
+
   const options = {
     method: "GET",
     headers: {
@@ -34,12 +34,10 @@ const fetchmoviespopular = async (type: string, id: number) => {
 
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
-    console.log("1erererer");
     const body = await req.json(); // Parse the request body
     const { type, id } = body;
-    console.log("2erererer");
+
     const data = await fetchmoviespopular(type, id);
-    console.log("3erererer");
 
     return NextResponse.json(
       {
@@ -48,7 +46,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
       { status: 200 }
     );
   } catch (err) {
-    console.log(err);
     return NextResponse.json(
       {
         error: err,

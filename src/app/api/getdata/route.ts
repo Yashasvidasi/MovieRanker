@@ -12,7 +12,6 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { id, from } = body;
     const token = req.cookies.get("token")?.value || "";
-    console.log(token);
 
     if (token === "") {
       const response = NextResponse.json(

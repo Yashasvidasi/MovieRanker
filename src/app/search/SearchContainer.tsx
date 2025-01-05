@@ -44,7 +44,7 @@ const SearchContainer = forwardRef<HTMLDivElement, SearchContainerProps>(
             setsearches(result.searches);
           }
         } catch (err) {
-          console.log(err);
+          throw err;
         }
       };
 

@@ -45,7 +45,7 @@ const Page: React.FC = () => {
         },
       });
       const data = await response.json();
-      console.log(data);
+
       if (data.success) {
         setLocalSeriesRanking(data.series_ranking);
       }
@@ -64,7 +64,6 @@ const Page: React.FC = () => {
   };
 
   const renderTiles = (tierIndex: number) => {
-    console.log(localSeriesRanking);
     return localSeriesRanking
       .filter((series) => getTierIndex(series.rating) === tierIndex)
       .sort((a, b) => b.rating - a.rating)
@@ -105,7 +104,6 @@ const Page: React.FC = () => {
         </header>
         <div className="flex flex-col w-full space-y-4">
           {tierColors.map((color, tierIndex) => {
-            console.log(`bg-gradient-to-r from-black to-${color}`);
             return (
               <div
                 key={tierIndex}

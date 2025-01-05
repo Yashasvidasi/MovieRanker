@@ -75,7 +75,6 @@ const Page = () => {
   const handleSearch = async () => {
     setpage(1);
     const content = await fetchmovies(1);
-    console.log(content);
 
     if (content.total_results === 0) {
       setsearchcontent(notfound);
@@ -90,7 +89,7 @@ const Page = () => {
 
   const handlepagechange = async () => {
     const content = await fetchmovies(page);
-    console.log(content);
+
     if (content === null) {
       return;
     }

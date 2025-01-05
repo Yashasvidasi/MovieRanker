@@ -33,7 +33,6 @@ const MovieCard = (props: {
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.98 }}
       onClick={() => {
-        console.log(props.data);
         if (props.data.otype === "tv") {
           router.push(`/tv/${props.data.id}`);
         } else {

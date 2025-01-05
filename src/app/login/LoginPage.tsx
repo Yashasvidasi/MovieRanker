@@ -46,7 +46,7 @@ function LoginPage({ setlogin }: { setlogin: (arg0: boolean) => void }) {
           password: password,
         }),
       });
-      console.log("sent", email, password);
+
       const data = await response.json();
 
       // userid is stored in data.id

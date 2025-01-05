@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 export function GET(req: NextRequest) {
   try {
     const token = req.cookies.get("token")?.value || "";
-    console.log(token);
+
     if (token === "") {
       const response = NextResponse.json(
         {

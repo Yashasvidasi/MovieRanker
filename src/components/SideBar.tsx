@@ -24,7 +24,7 @@ function SideBar() {
         `/api/gettoken2?cachebuster=${new Date().getTime()}`,
         options
       );
-      console.log(response);
+
       const data = await response.json();
 
       // Dismiss the loading toast
