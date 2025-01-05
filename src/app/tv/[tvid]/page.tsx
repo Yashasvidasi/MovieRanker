@@ -256,7 +256,8 @@ const MoviePage = ({ params }: { params: any }) => {
           const cast = result.payload_cast;
           setMovie(movieData);
           const filteredSeasons = result.payload_data.seasons.filter(
-            (season: { air_date: null }) => season.air_date !== null
+            (season: { air_date: string | null; name: string }) =>
+              season.air_date !== null && season.name !== "Specials"
           );
           settotalseasons(filteredSeasons);
 
