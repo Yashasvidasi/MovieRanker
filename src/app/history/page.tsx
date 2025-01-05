@@ -14,9 +14,8 @@ const Page = () => {
     // Parse the history and update the state
     if (storedHistory) {
       setWatchHistory(JSON.parse(storedHistory));
-      if (JSON.parse(storedHistory).length === 0) {
-        setmsg("Nothing here");
-      }
+    } else {
+      setmsg("Nothing here");
     }
   }, []);
 
