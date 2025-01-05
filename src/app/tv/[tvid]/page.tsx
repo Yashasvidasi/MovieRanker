@@ -582,8 +582,7 @@ const MoviePage = ({ params }: { params: any }) => {
             {
               <iframe
                 className="w-full h-full"
-                onClick={handlecc}
-                onPlay={handlecc}
+                onLoad={handlecc}
                 src={`https://vidsrc.dev/embed/tv/${params.tvid}/${season}/${episode}`}
                 sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"
                 referrerPolicy="no-referrer"

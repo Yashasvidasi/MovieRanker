@@ -14,6 +14,10 @@ function SignInPage({ setlogin }: { setlogin: (arg0: boolean) => void }) {
   const notifyFailure = () =>
     toast("Something went Wrong Please try again later");
 
+  const notifyFailureUsername = () => toast("Username already taken");
+
+  const notifyFailureEmail = () => toast("Email is already registered ");
+
   const notifySent = () => {
     const toastId = toast.loading("Loading...");
     return toastId;
@@ -40,11 +44,18 @@ function SignInPage({ setlogin }: { setlogin: (arg0: boolean) => void }) {
 
       const data = await response.json();
       dismissToast(toastId);
+
       if (data.success === true) {
         notifySuccess();
         setlogin(true);
       } else {
-        notifyFailure();
+        if (data.message === "Username already taken") {
+          notifyFailureUsername();
+        } else if (data.message === "Email already registered") {
+          notifyFailureEmail();
+        } else {
+          notifyFailure();
+        }
       }
 
       setUsername("");
@@ -53,7 +64,7 @@ function SignInPage({ setlogin }: { setlogin: (arg0: boolean) => void }) {
       setreppassword("");
 
       if (response.status === 500) {
-        console.log("NO SOLUTION");
+        console.log("Server error");
         return;
       }
     } catch (error) {

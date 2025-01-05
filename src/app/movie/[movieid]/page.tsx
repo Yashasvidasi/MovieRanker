@@ -569,6 +569,7 @@ const MoviePage = ({ params }: { params: any }) => {
           >
             <iframe
               className="w-full h-full"
+              onLoad={handlecc}
               src={`https://vidsrc.dev/embed/movie/${params.movieid}`}
               sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"
               referrerPolicy="no-referrer"

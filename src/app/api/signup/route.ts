@@ -14,42 +14,47 @@ export async function POST(req: NextRequest) {
     const body = await req.json(); // Parse the request body
     const { username, email, password } = body;
     console.log(body);
-    const user = await User.findOne({ username });
 
-    if (user) {
-      return NextResponse.json({ message: "Username exists" }, { status: 400 });
+    // Check if the username exists
+    const userByUsername = await User.findOne({ username });
+    if (userByUsername) {
+      return NextResponse.json(
+        { message: "Username already taken" },
+        { status: 400 }
+      );
     }
 
-    const generateHash = (input: string) => {
-      return crypto.createHash("sha256").update(input).digest("hex");
-    };
+    // Check if the email exists
+    const userByEmail = await User.findOne({ email });
+    if (userByEmail) {
+      return NextResponse.json(
+        { message: "Email already registered" },
+        { status: 400 }
+      );
+    }
 
+    // Continue with user registration if username and email are unique
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password, salt);
-    const hashstring = generateHash(hashedPassword + Date.now().toString());
-    const keyPair = ec.keyFromPrivate(hashstring, "hex");
-    const publicKey = keyPair.getPublic("hex");
-
     const newUser = new User({
       username,
       email,
       password: hashedPassword,
     });
 
-    const saveduser = await newUser.save();
-    console.log(saveduser);
+    const savedUser = await newUser.save();
 
-    //send verification email
-
+    // Send verification email
     await sendEmail({
       email,
       emailType: "VERIFY",
-      userId: saveduser._id,
+      userId: savedUser._id,
     });
+
     return NextResponse.json({
-      message: "User registration success",
+      message: "User registration successful",
       success: true,
-      saveduser,
+      savedUser,
     });
   } catch (err) {
     console.error("Error verifying user:", err);
