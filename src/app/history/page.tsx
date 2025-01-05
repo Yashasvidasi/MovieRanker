@@ -28,11 +28,14 @@ const Page = () => {
         </div>
         <div className="flex flex-row flex-wrap justify-start w-full">
           {watchHistory.length > 0 ? (
-            watchHistory.map((item, index) => (
-              <div key={index} className="m-4">
-                <Card data={item} />
-              </div>
-            ))
+            watchHistory
+              .slice()
+              .reverse()
+              .map((item, index) => (
+                <div key={index} className="m-4">
+                  <Card data={item} />
+                </div>
+              ))
           ) : (
             <p className="text-center text-lg">{msg}</p>
           )}
