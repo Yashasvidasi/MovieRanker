@@ -23,7 +23,7 @@ const Page = () => {
     <div className="relative flex flex-row w-screen h-screen bg-black overflow-hidden text-white">
       <SideBar />
       <div className="flex flex-col ml-10">
-        <div className="mt-5 text-5xl mb-5 font-semibold ">
+        <div className="mt-5 text-4xl mb-6 font-semibold ">
           Continue Watching
         </div>
         <div className="flex flex-row flex-wrap justify-start w-full">
