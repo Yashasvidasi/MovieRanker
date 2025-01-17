@@ -41,7 +41,7 @@ const Page = () => {
   return (
     <div className="relative flex flex-row w-screen h-screen bg-black overflow-hidden text-white">
       <SideBar />
-      <div className="flex flex-col ml-10">
+      <div className="flex flex-col ml- overflow-auto">
         <div className="mt-5 text-4xl mb-6w font-semibold">
           Continue Watching
         </div>
