@@ -30,7 +30,6 @@ const PaginationFilter: React.FC<PaginationProps> = ({ onPageChange }) => {
     const startPage = Math.max(1, page - 1);
     const endPage = Math.min(totalpages, page + 1);
 
-    // Add first page number
     if (startPage > 2) {
       pageNumbers.push(
         <button
@@ -55,7 +54,6 @@ const PaginationFilter: React.FC<PaginationProps> = ({ onPageChange }) => {
       }
     }
 
-    // Add middle page numbers
     for (let i = startPage; i <= endPage; i++) {
       pageNumbers.push(
         <button
@@ -70,7 +68,6 @@ const PaginationFilter: React.FC<PaginationProps> = ({ onPageChange }) => {
       );
     }
 
-    // Add last page number
     if (endPage < totalpages) {
       if (endPage < totalpages - 1) {
         pageNumbers.push(

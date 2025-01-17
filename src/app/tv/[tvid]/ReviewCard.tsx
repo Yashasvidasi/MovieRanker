@@ -16,7 +16,6 @@ const ReviewCard = (props: {
     ? `https://image.tmdb.org/t/p/w500${author_details.avatar_path}`
     : "/assets/user.png";
 
-  // Determine if content needs to be truncated
   const [isExpanded, setIsExpanded] = useState(false);
   const wordLimit = 150;
   const words = content.split(" ");

@@ -30,9 +30,9 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowPopup(false);
-    }, 10000); // Popup will automatically close after 10 seconds, adjust as needed
+    }, 10000);
 
-    return () => clearTimeout(timer); // Cleanup timer on unmount
+    return () => clearTimeout(timer);
   }, []);
 
   return (

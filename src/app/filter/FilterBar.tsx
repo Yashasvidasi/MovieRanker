@@ -7,7 +7,7 @@ const FilterBar = ({ handlefilter }: { handlefilter: () => void }) => {
   const [dropdownOpen, setDropdownOpen] = useState<string>("");
   const [years] = useState(
     Array.from({ length: 75 }, (_, i) => (2024 - i).toString())
-  ); // Generate years from 1950 to 2024
+  );
   const [languages, setLanguages] = useState<
     { iso_639_1: string; english_name: string }[]
   >([]);

@@ -15,7 +15,6 @@ const SlideShowCard = ({
 }) => {
   const router = useRouter();
 
-  // Generate the dynamic link
   const generateLink = () => {
     if (data.name) {
       return data.gender ? `/person/${data.id}` : `/tv/${data.id}`;
@@ -70,8 +69,8 @@ const SlideShowCard = ({
                     <motion.div
                       whileHover={{ scale: 1.04 }}
                       onClick={(e) => {
-                        e.preventDefault(); // Prevent default anchor behavior
-                        router.push(link); // Use SPA navigation
+                        e.preventDefault();
+                        router.push(link);
                       }}
                       className="p-2 hover:cursor-pointer border-2 border-white text-lg rounded-2xl flex flex-row"
                     >

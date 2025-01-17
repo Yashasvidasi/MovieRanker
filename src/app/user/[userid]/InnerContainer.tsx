@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { UserContext } from "./UserContext";
 import SideBar from "@/components/SideBar";
-import MovieCard from "./moviecard"; // Import the MovieCard component
+import MovieCard from "./moviecard";
 
 import {
   FaFilm,
@@ -94,7 +94,6 @@ const InnerContainer = ({ params }: { params: any }) => {
     handleget();
   }, []);
 
-  // Sorting functions and limiting to top 10
   const sortedMovieRanking = movieranking
     ?.sort((a, b) => b.rating - a.rating)
     .slice(0, 10);
@@ -102,7 +101,6 @@ const InnerContainer = ({ params }: { params: any }) => {
     ?.sort((a, b) => b.rating - a.rating)
     .slice(0, 10);
 
-  // Refs for scroll containers
   const watchLaterRef = useRef<HTMLDivElement>(null);
   const watchHistoryRef = useRef<HTMLDivElement>(null);
   const favoritesRef = useRef<HTMLDivElement>(null);

@@ -51,7 +51,7 @@ const MovieList = () => {
   };
 
   const addUniqueItems = (prevList: any[], newItems: any[]) => {
-    const newItemsSet = new Set(newItems.map((item) => item.id)); // Adjust based on unique property
+    const newItemsSet = new Set(newItems.map((item) => item.id));
     return [
       ...prevList.filter((item) => !newItemsSet.has(item.id)),
       ...newItems,
@@ -115,8 +115,8 @@ const MovieList = () => {
           setPopularMovie(data.results);
           setallmovies(data.results);
           controls2.start({
-            y: [300, 0], // Start from 300 and move to 0
-            opacity: [0, 1], // Fade in effect
+            y: [300, 0],
+            opacity: [0, 1],
             transition: { duration: 0.5, ease: "easeIn" },
           });
           break;
@@ -189,8 +189,8 @@ const MovieList = () => {
       setallmovies(TopSeries);
     }
     controls2.start({
-      y: [300, 0], // Start from 300 and move to 0
-      opacity: [0, 1], // Fade in effect
+      y: [300, 0],
+      opacity: [0, 1],
       transition: { duration: 0.5, ease: "easeIn" },
     });
     containerRef.current?.scrollTo({ left: 0, behavior: "smooth" });

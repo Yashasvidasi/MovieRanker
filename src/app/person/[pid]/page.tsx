@@ -40,7 +40,7 @@ interface TVShow {
 }
 
 const ActorPage = ({ params }: { params: any }) => {
-  const pid = params?.pid; // Adjusted to safely get pid
+  const pid = params?.pid;
   const [movies, setMovies] = useState<Movie[]>([]);
   const [personalData, setPersonalData] = useState<Personal | null>(null);
   const [images, setImages] = useState<Image[]>([]);
@@ -52,9 +52,9 @@ const ActorPage = ({ params }: { params: any }) => {
   const [IsUpdating, setIsUpdating] = useState(false);
 
   const truncateText = (text: string, wordLimit: number = 150) => {
-    const words = text.split(/\s+/); // Split the text into words
-    if (words.length <= wordLimit) return text; // If there are fewer words than the limit, return the full text
-    return words.slice(0, wordLimit).join(" ") + "..."; // Otherwise, join the first `wordLimit` words and add ellipses
+    const words = text.split(/\s+/);
+    if (words.length <= wordLimit) return text;
+    return words.slice(0, wordLimit).join(" ") + "...";
   };
 
   useEffect(() => {
@@ -96,7 +96,7 @@ const ActorPage = ({ params }: { params: any }) => {
   }, []);
 
   const postfavorite = async (operation: string) => {
-    setIsUpdating(true); // Disable the button
+    setIsUpdating(true);
     const obj = {
       id: params.pid,
       name: personalData!.name,
@@ -128,7 +128,7 @@ const ActorPage = ({ params }: { params: any }) => {
     } catch (err) {
       console.error("Fetch Error:", err);
     } finally {
-      setIsUpdating(false); // Enable the button
+      setIsUpdating(false);
     }
   };
 

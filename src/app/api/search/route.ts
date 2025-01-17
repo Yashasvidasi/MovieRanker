@@ -21,7 +21,7 @@ const fetchmovies = async (
 };
 
 export async function POST(req: NextRequest) {
-  const body = await req.json(); // Parse the request body
+  const body = await req.json();
   const { sterm, type, adult, page } = body;
   const queryString = sterm.split(" ").join("%20");
   const adultString = adult ? "true" : "false";

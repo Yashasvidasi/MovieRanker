@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import jwt from "jsonwebtoken"; // Import the JWT library
-
-// Replace this with your actual secret key
+import jwt from "jsonwebtoken";
 const SECRET_KEY = process.env.TOKEN_SECRET!;
 
 export function middleware(request: NextRequest) {
@@ -21,7 +19,6 @@ export function middleware(request: NextRequest) {
 
   if (token) {
     try {
-      // Verify the token
       const fetchData = async () => {
         const options = {
           method: "GET",
@@ -43,21 +40,20 @@ export function middleware(request: NextRequest) {
       };
 
       fetchData();
-      // If token is valid, allow access to the path
+
       if (path.startsWith("/user")) {
         return NextResponse.next();
       }
     } catch (error) {
       console.error("Token verification failed:", error);
-      // Token verification failed, redirect to login
+
       return NextResponse.redirect(new URL("/login", request.url));
     }
   }
 
-  // No valid token or trying to access a protected route without a token, redirect to login
   return NextResponse.redirect(new URL("/login", request.url));
 }
 
 export const config = {
-  matcher: ["/", "/home", "/user/:path*", "/login", "/user"], // Use wildcard for dynamic segments
+  matcher: ["/", "/home", "/user/:path*", "/login", "/user"],
 };

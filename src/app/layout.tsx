@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
+import Script from "next/script";
+import { useEffect } from "react";
 
 export const metadata: Metadata = {
   title: "Y-Movies",

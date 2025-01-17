@@ -26,7 +26,6 @@ const CastCard = (props: {
 
   const router = useRouter();
 
-  // Generate the dynamic URL based on the data
   const generateUrl = () => {
     if (props.data.name) {
       return props.data.gender
@@ -41,16 +40,16 @@ const CastCard = (props: {
       className="relative h-fit flex flex-col hover:cursor-pointer"
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.98 }}
-      onClick={() => router.push(generateUrl())} // Navigate normally on click
+      onClick={() => router.push(generateUrl())}
     >
       <motion.div
         className="absolute top-0 left-0 w-full h-1 bg-red-500 rounded"
         initial={{ width: 0 }}
       />
       <a
-        href={generateUrl()} // Dynamic URL
-        rel="noopener noreferrer" // Security and performance
-        onClick={(e) => e.stopPropagation()} // Prevent click from triggering parent `onClick`
+        href={generateUrl()}
+        rel="noopener noreferrer"
+        onClick={(e) => e.stopPropagation()}
       >
         {props.data.poster_path || props.data.profile_path ? (
           <img

@@ -21,7 +21,6 @@ const Filter = () => {
     settotalpages,
     filtercontent,
     setfiltercontent,
-    // Add any other context methods or state you need here
   } = useContext(FilterContext)!;
 
   const refer = useRef<HTMLDivElement>(null);
@@ -48,7 +47,7 @@ const Filter = () => {
         genre,
         lang,
         page,
-        adult: false, // Example value; adjust as needed
+        adult: false,
       }),
     });
 
@@ -73,7 +72,7 @@ const Filter = () => {
     }
     settotalpages(content.total_pages);
     setfiltercontent(content.results);
-    setInitialLoad(true); // Mark initial load as completed
+    setInitialLoad(true);
   };
 
   const handlepagechange = async () => {

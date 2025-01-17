@@ -64,7 +64,7 @@ const getgenre = async (
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json(); // Parse the request body
+    const body = await req.json();
     const { adult, genre, lang, order, release, sort, type, page } = body;
 
     const data = await getgenre(

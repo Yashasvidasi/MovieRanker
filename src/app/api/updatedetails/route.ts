@@ -8,7 +8,7 @@ connect();
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json(); // Parse the request body
+    const body = await req.json();
     const { type, object, operation } = body;
     const token = req.cookies.get("token")?.value || "";
 

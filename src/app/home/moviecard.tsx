@@ -39,7 +39,6 @@ const MovieCard = (props: {
 
   const router = useRouter();
 
-  // Generate the dynamic link
   const generateLink = () => {
     if (props.data.name) {
       return props.data.gender
@@ -58,8 +57,8 @@ const MovieCard = (props: {
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.98 }}
         onClick={(e) => {
-          e.preventDefault(); // Prevent default anchor behavior
-          router.push(link); // Use SPA navigation
+          e.preventDefault();
+          router.push(link);
         }}
         onHoverStart={() => {
           handleMouseEnter();

@@ -42,7 +42,16 @@ const MoviePage = ({ params }: { params: any }) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isUpdatingcomp, setIsUpdatingcomp] = useState(false);
   const [otherrec, setotherrec] = useState([]);
+  const [selectedServer, setSelectedServer] = useState("Server 1");
 
+  const servers = [
+    "Server 1",
+    "Server 2",
+    "Server 3",
+    "Server 4",
+    "Server 5",
+    "Server 6",
+  ];
   useEffect(() => {
     const fetchMatrix = async () => {
       const response = await fetch("/api/recommend/movie", {
@@ -68,7 +77,7 @@ const MoviePage = ({ params }: { params: any }) => {
   };
 
   const postwatchlater = async (operation: string) => {
-    setIsUpdating(true); // Disable the button
+    setIsUpdating(true);
     const obj = {
       id: params.movieid,
       title: movie!.title,
@@ -101,7 +110,7 @@ const MoviePage = ({ params }: { params: any }) => {
       console.error("Fetch Error:", err);
       setError("Error fetching data");
     } finally {
-      setIsUpdating(false); // Enable the button
+      setIsUpdating(false);
     }
   };
 
@@ -140,7 +149,7 @@ const MoviePage = ({ params }: { params: any }) => {
   };
 
   const postRanking = async (operation: string, rate: number) => {
-    setIsUpdatingcomp(true); // Disable the button
+    setIsUpdatingcomp(true);
     let gg: string[] = [];
     movie!.genres.forEach((item) => {
       gg.push(item.name);
@@ -297,20 +306,17 @@ const MoviePage = ({ params }: { params: any }) => {
       otype: "movie",
     };
 
-    // Get the existing WatchHistory from localStorage or initialize an empty array if not found
     const watchHistory = JSON.parse(
       localStorage.getItem("WatchHistory") || "[]"
     );
 
-    // Check if the movie is already in the WatchHistory (based on 'id')
     const isAlreadyInHistory = watchHistory.some(
       (item: any) => item.id === obj.id
     );
 
-    // Append the new object to the list only if it's not already present
     if (!isAlreadyInHistory) {
       watchHistory.push(obj);
-      // Save the updated list back to localStorage
+
       localStorage.setItem("WatchHistory", JSON.stringify(watchHistory));
     }
   };
@@ -322,10 +328,8 @@ const MoviePage = ({ params }: { params: any }) => {
   const handleRatingChange = (e: any) => {
     const value = e.target.value;
 
-    // Parse the value to a number
     const numberValue = parseFloat(value);
 
-    // Check if the value is a valid number and within the desired range
     if (!isNaN(numberValue)) {
       if (numberValue < 0) {
         setlocalrate(0);
@@ -335,8 +339,7 @@ const MoviePage = ({ params }: { params: any }) => {
         setlocalrate(numberValue);
       }
     } else {
-      // Handle non-numeric input gracefully if needed
-      setlocalrate(0); // or setlocalrate(previousValidValue);
+      setlocalrate(0);
     }
   };
 
@@ -417,7 +420,7 @@ const MoviePage = ({ params }: { params: any }) => {
                               className="border border-gray-300 rounded text-black p-1"
                             />
                             <button
-                              onClick={handleConfirm} // Implement this to handle the confirm action
+                              onClick={handleConfirm}
                               className="ml-2 bg-blue-500 text-white p-1 rounded"
                             >
                               Confirm
@@ -558,6 +561,35 @@ const MoviePage = ({ params }: { params: any }) => {
             </div>
           )}
 
+          {servers.length > 0 && (
+            <div className="mb-16 flex flex-col">
+              <h2 className="text-2xl sm:text-2xl font-semibold mb-5">
+                SERVERS
+              </h2>
+              <div className="flex flex-row flex-wrap md:justify-start justify-center gap-3">
+                {servers.map((server, index) => {
+                  return (
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 1 }}
+                      key={index}
+                      onClick={() => {
+                        setSelectedServer(server);
+                      }}
+                      className={` rounded-xl p-2 text-lg font-semibold text-center hover:cursor-pointer ${
+                        selectedServer === server
+                          ? "bg-green-700"
+                          : "bg-slate-800"
+                      }`}
+                    >
+                      {server}
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           <div
             ref={scrollToRef}
             onClick={handlecc}
@@ -566,9 +598,19 @@ const MoviePage = ({ params }: { params: any }) => {
             <iframe
               className="w-full h-full"
               onLoad={handlecc}
-              src={`https://vidsrc.dev/embed/movie/${params.movieid}`}
-              sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"
-              referrerPolicy="no-referrer"
+              src={
+                selectedServer === "Server 1"
+                  ? `https://vidsrc.vc/embed/movie/${params.movieid}`
+                  : selectedServer === "Server 2"
+                  ? `https://vidsrc.in/embed/movie/${params.movieid}`
+                  : selectedServer === "Server 3"
+                  ? `https://vidsrc.pm/embed/movie/${params.movieid}`
+                  : selectedServer === "Server 4"
+                  ? `https://vidsrc.net/embed/movie/${params.movieid}`
+                  : selectedServer === "Server 5"
+                  ? `https://vidsrc.xyz/embed/movie/${params.movieid}`
+                  : `https://vidsrc.io/embed/movie/${params.movieid}`
+              }
               allowFullScreen
             />
           </div>

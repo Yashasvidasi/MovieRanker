@@ -49,7 +49,6 @@ function LoginPage({ setlogin }: { setlogin: (arg0: boolean) => void }) {
 
       const data = await response.json();
 
-      // userid is stored in data.id
       dismissToast(notifySentid);
       if (data.success === true) {
         notifysuccess();

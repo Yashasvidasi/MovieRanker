@@ -47,6 +47,16 @@ const MoviePage = ({ params }: { params: any }) => {
   const [episode, setepisode] = useState(1);
   const [totalseasons, settotalseasons] = useState<any[]>([]);
   const [otherrec, setotherrec] = useState([]);
+  const [selectedServer, setSelectedServer] = useState("Server 1");
+
+  const servers = [
+    "Server 1",
+    "Server 2",
+    "Server 3",
+    "Server 4",
+    "Server 5",
+    "Server 6",
+  ];
 
   useEffect(() => {
     const fetchMatrix = async () => {
@@ -73,7 +83,7 @@ const MoviePage = ({ params }: { params: any }) => {
   };
 
   const postwatchlater = async (operation: string) => {
-    setIsUpdating(true); // Disable the button
+    setIsUpdating(true);
     const obj = {
       id: params.tvid,
       title: movie!.name,
@@ -107,7 +117,7 @@ const MoviePage = ({ params }: { params: any }) => {
       console.error("Fetch Error:", err);
       setError("Error fetching data");
     } finally {
-      setIsUpdating(false); // Enable the button
+      setIsUpdating(false);
     }
   };
 
@@ -145,7 +155,7 @@ const MoviePage = ({ params }: { params: any }) => {
   };
 
   const postRanking = async (operation: string, rate: number) => {
-    setIsUpdatingcomp(true); // Disable the button
+    setIsUpdatingcomp(true);
     let gg: string[] = [];
     movie!.genres.forEach((item) => {
       gg.push(item.name);
@@ -216,10 +226,8 @@ const MoviePage = ({ params }: { params: any }) => {
   const handleRatingChange = (e: any) => {
     const value = e.target.value;
 
-    // Parse the value to a number
     const numberValue = parseFloat(value);
 
-    // Check if the value is a valid number and within the desired range
     if (!isNaN(numberValue)) {
       if (numberValue < 0) {
         setlocalrate(0);
@@ -229,8 +237,7 @@ const MoviePage = ({ params }: { params: any }) => {
         setlocalrate(numberValue);
       }
     } else {
-      // Handle non-numeric input gracefully if needed
-      setlocalrate(0); // or setlocalrate(previousValidValue);
+      setlocalrate(0);
     }
   };
 
@@ -238,7 +245,6 @@ const MoviePage = ({ params }: { params: any }) => {
     const fetchData = async () => {
       try {
         if (tvid) {
-          // Fetch data from API
           const response = await fetch(`/api/getseries`, {
             method: "POST",
             headers: {
@@ -271,14 +277,13 @@ const MoviePage = ({ params }: { params: any }) => {
           localStorage.getItem("WatchHistory") || "[]"
         );
 
-        // Find the matching entry in the watch history
         const matchedEntry = watchHistory.find(
           (element: { id: any }) => element.id === tvid
         );
 
         if (matchedEntry) {
-          setepisode(matchedEntry.episode || 1); // Default to 1 if episode is not found
-          setseason(matchedEntry.season || 1); // Default to 1 if season is not found
+          setepisode(matchedEntry.episode || 1);
+          setseason(matchedEntry.season || 1);
         }
       } catch (err) {
         console.error("Fetch Error:", err);
@@ -351,26 +356,21 @@ const MoviePage = ({ params }: { params: any }) => {
       episode: episode,
     };
 
-    // Get the existing WatchHistory from localStorage or initialize an empty array if not found
     const watchHistory = JSON.parse(
       localStorage.getItem("WatchHistory") || "[]"
     );
 
-    // Check if the movie is already in the WatchHistory (based on 'id')
     const existingIndex = watchHistory.findIndex(
       (item: any) => item.id === obj.id
     );
 
     if (existingIndex !== -1) {
-      // Update the existing object's episode and season
       watchHistory[existingIndex].season = season;
       watchHistory[existingIndex].episode = episode;
     } else {
-      // Append the new object to the list if it's not already present
       watchHistory.push(obj);
     }
 
-    // Save the updated list back to localStorage
     localStorage.setItem("WatchHistory", JSON.stringify(watchHistory));
   };
 
@@ -455,7 +455,7 @@ const MoviePage = ({ params }: { params: any }) => {
                               className="border border-gray-300 rounded text-black p-1"
                             />
                             <button
-                              onClick={handleConfirm} // Implement this to handle the confirm action
+                              onClick={handleConfirm}
                               className="ml-2 bg-blue-500 text-white p-1 rounded"
                             >
                               Confirm
@@ -600,21 +600,58 @@ const MoviePage = ({ params }: { params: any }) => {
             </div>
           )}
 
+          {servers.length > 0 && (
+            <div className="mb-16 flex flex-col">
+              <h2 className="text-2xl sm:text-2xl font-semibold mb-5">
+                SERVERS
+              </h2>
+              <div className="flex flex-row flex-wrap md:justify-start justify-center gap-3">
+                {servers.map((server, index) => {
+                  return (
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 1 }}
+                      key={index}
+                      onClick={() => {
+                        setSelectedServer(server);
+                      }}
+                      className={` rounded-xl p-2 text-lg font-semibold text-center hover:cursor-pointer ${
+                        selectedServer === server
+                          ? "bg-green-700"
+                          : "bg-slate-800"
+                      }`}
+                    >
+                      {server}
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           <div
             ref={scrollToRef}
-            className="h-[600px] w-full  mb-12"
             onClick={handlecc}
+            className="md:h-[600px] h-[250px] w-full  mb-12"
           >
-            {
-              <iframe
-                className="w-full h-full"
-                onLoad={handlecc}
-                src={`https://vidsrc.dev/embed/tv/${params.tvid}/${season}/${episode}`}
-                sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"
-                referrerPolicy="no-referrer"
-                allowFullScreen
-              />
-            }
+            <iframe
+              className="w-full h-full"
+              onLoad={handlecc}
+              src={
+                selectedServer === "Server 1"
+                  ? `https://vidsrc.vc/embed/tv/${params.tvid}/${season}/${episode}`
+                  : selectedServer === "Server 2"
+                  ? `https://vidsrc.in/embed/tv/${params.tvid}/${season}/${episode}`
+                  : selectedServer === "Server 3"
+                  ? `https://vidsrc.pm/embed/tv/${params.tvid}/${season}/${episode}`
+                  : selectedServer === "Server 4"
+                  ? `https://vidsrc.net/embed/tv/${params.tvid}/${season}/${episode}`
+                  : selectedServer === "Server 5"
+                  ? `https://vidsrc.xyz/embed/tv/${params.tvid}/${season}/${episode}`
+                  : `https://vidsrc.io/embed/tv/${params.tvid}/${season}/${episode}`
+              }
+              allowFullScreen
+            />
           </div>
 
           <div className="relative flex flex-row mb-10">
@@ -648,7 +685,7 @@ const MoviePage = ({ params }: { params: any }) => {
                       onClick={() => {
                         setseason(index + 1);
                         setshowseasons(false);
-                        setshowepisodes(true); // Show episodes when season is selected
+                        setshowepisodes(true);
                       }}
                     >
                       {item.name}

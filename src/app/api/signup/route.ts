@@ -11,10 +11,9 @@ connect();
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json(); // Parse the request body
+    const body = await req.json();
     const { username, email, password } = body;
 
-    // Check if the username exists
     const userByUsername = await User.findOne({ username });
     if (userByUsername) {
       return NextResponse.json(
@@ -23,7 +22,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check if the email exists
     const userByEmail = await User.findOne({ email });
     if (userByEmail) {
       return NextResponse.json(
@@ -32,7 +30,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Continue with user registration if username and email are unique
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password, salt);
     const newUser = new User({
@@ -43,7 +40,6 @@ export async function POST(req: NextRequest) {
 
     const savedUser = await newUser.save();
 
-    // Send verification email
     await sendEmail({
       email,
       emailType: "VERIFY",

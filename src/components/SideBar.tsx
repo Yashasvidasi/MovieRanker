@@ -2,14 +2,13 @@
 import { useRouter, usePathname } from "next/navigation";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import toast, { Toaster } from "react-hot-toast"; // Import toast and Toaster
+import toast, { Toaster } from "react-hot-toast";
 
 function SideBar() {
   const [show, setShow] = useState(false);
   const router = useRouter();
 
   const fetchData = async () => {
-    // Show loading toast
     const loadingToast = toast.loading("Loading...", { duration: 1800 });
 
     const options = {
@@ -27,13 +26,11 @@ function SideBar() {
 
       const data = await response.json();
 
-      // Dismiss the loading toast
       toast.dismiss(loadingToast);
 
       if (data.id !== "not_logged_in") router.push(`/user/${data.id}`);
       else router.push("/login");
     } catch (error) {
-      // Dismiss the loading toast and show error message
       toast.dismiss(loadingToast);
       toast.error("Something went wrong!");
     }

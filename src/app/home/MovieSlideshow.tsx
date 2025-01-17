@@ -50,8 +50,8 @@ const MovieSlideshow = () => {
 
   useEffect(() => {
     controls.start({
-      x: [-700, 0], // Start from 1000 and move to 0
-      opacity: [0, 1], // Fade in effect
+      x: [-700, 0],
+      opacity: [0, 1],
       transition: { duration: 0.5, ease: "easeInOut" },
     });
   }, [currentNumber, controls]);

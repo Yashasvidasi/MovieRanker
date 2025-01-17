@@ -2,21 +2,21 @@
 import SideBar from "@/components/SideBar";
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../UserContext";
-import Tile from "./Tile"; // Adjust the path as needed
+import Tile from "./Tile";
 import { useRouter } from "next/navigation";
 
 const tierColors = [
-  "to-red-600", // Tier 1: Rating 10
-  "to-orange-600", // Tier 2: Rating 9-10
-  "to-yellow-600", // Tier 3: Rating 8-9
-  "to-green-600", // Tier 4: Rating 7-8
-  "to-teal-600", // Tier 5: Rating 6-7
-  "to-blue-600", // Tier 6: Rating 5-6
-  "to-indigo-600", // Tier 7: Rating 4-5
-  "to-purple-600", // Tier 8: Rating 3-4
-  "to-pink-600", // Tier 9: Rating 2-3
-  "to-gray-600", // Tier 10: Rating 1-2
-  "to-gray-300", // Not Ranked: Rating 0
+  "to-red-600",
+  "to-orange-600",
+  "to-yellow-600",
+  "to-green-600",
+  "to-teal-600",
+  "to-blue-600",
+  "to-indigo-600",
+  "to-purple-600",
+  "to-pink-600",
+  "to-gray-600",
+  "to-gray-300",
 ];
 
 const Page: React.FC = () => {
@@ -43,9 +43,7 @@ const Page: React.FC = () => {
       if (data.success) {
         setLocalSeriesRanking(data.movie_ranking);
       }
-    } catch (err) {
-      //try again 3 times
-    }
+    } catch (err) {}
   };
 
   useEffect(() => {
@@ -80,10 +78,9 @@ const Page: React.FC = () => {
     } else if (num === 10) {
       return "Not Rated";
     } else if (num >= 1 && num <= 9) {
-      // Convert number to corresponding letter (1 -> A, 2 -> B, ..., 9 -> I)
       return String.fromCharCode(64 + num);
     } else {
-      return "Invalid"; // Handle numbers outside the range 0-10 if needed
+      return "Invalid";
     }
   };
 

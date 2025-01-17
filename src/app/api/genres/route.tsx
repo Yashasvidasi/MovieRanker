@@ -22,7 +22,7 @@ const getgenre = async (type: string) => {
 
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
-    const body = await req.json(); // Parse the request body
+    const body = await req.json();
     const { type } = body;
     const data = await getgenre(type);
     if (data) {

@@ -15,13 +15,11 @@ const FilterCard = (props: {
 }) => {
   const router = useRouter();
 
-  // Function to truncate text to 25 characters
   const truncateText = (s: string | undefined) => {
     if (!s) return null;
     return s.length > 25 ? `${s.slice(0, 24)}...` : s;
   };
 
-  // Generate the dynamic link based on data
   const generateLink = () => {
     if (props.data.name) {
       return props.data.gender
@@ -40,18 +38,16 @@ const FilterCard = (props: {
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.98 }}
         onClick={(e) => {
-          e.preventDefault(); // Prevent default navigation
-          router.push(link); // Use SPA navigation
+          e.preventDefault();
+          router.push(link);
         }}
       >
-        {/* Optional motion effect bar */}
         <motion.div
           className="absolute top-0 left-0 w-full h-1 bg-red-500 rounded"
           initial={{ width: 0 }}
           animate={{ width: "100%" }}
           transition={{ duration: 0.3 }}
         />
-        {/* Image or Placeholder */}
         {props.data.poster_path || props.data.profile_path ? (
           <img
             className="border-2 border-white md:h-56 md:w-32 h-44 w-24"
@@ -67,8 +63,6 @@ const FilterCard = (props: {
             </p>
           </div>
         )}
-
-        {/* Title or Name */}
         <p className="h-fit md:w-32 md:text-base text-xs w-24 mt-1 text-center self-center">
           {truncateText(props.data.title || props.data.name)}
         </p>

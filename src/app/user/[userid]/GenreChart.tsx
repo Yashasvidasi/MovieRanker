@@ -136,20 +136,20 @@ const GenreChart: React.FC<GenreChartProps> = ({
         position: "top" as const,
         labels: {
           font: {
-            size: 16, // Adjust the size as needed
+            size: 16,
           },
-          padding: 10, // Adjust padding between legend items
+          padding: 10,
         },
-        align: "start" as const, // Ensure you use 'start', 'center', or 'end'
+        align: "start" as const,
       },
       title: {
         display: true,
         text: title,
         font: {
-          size: 20, // Adjust the size as needed
+          size: 20,
         },
         padding: {
-          bottom: 20, // Adjust padding below the title
+          bottom: 20,
         },
       },
     },

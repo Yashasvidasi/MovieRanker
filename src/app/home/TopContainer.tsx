@@ -65,7 +65,6 @@ function TopContainer() {
 
   const router = useRouter();
 
-  // Generate dynamic route for the Play button
   const generateRoute = () => {
     if (data?.name) {
       return data.gender ? `/person/${data.id}` : `/tv/${data.id}`;
@@ -105,8 +104,8 @@ function TopContainer() {
                     whileHover={{ scale: 1.04 }}
                     className="p-2 hover:cursor-pointer border-2 border-white text-lg rounded-2xl flex flex-row"
                     onClick={(e) => {
-                      e.preventDefault(); // Prevent default link behavior
-                      router.push(generateRoute()); // Use SPA navigation
+                      e.preventDefault();
+                      router.push(generateRoute());
                     }}
                   >
                     <div className="self-center mr-1.5">
@@ -130,7 +129,7 @@ function TopContainer() {
               top: "3%",
               right: "7%",
               zIndex: 1,
-              transform: "scale(1.18)", // Adjust scale for desired size
+              transform: "scale(1.18)",
             }}
           >
             <ReactPlayer

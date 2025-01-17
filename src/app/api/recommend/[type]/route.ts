@@ -1,10 +1,9 @@
-// app/api/recommend/[type]/route.ts
+
 import { NextRequest, NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 import { parse } from "csv-parse/sync";
 
-// Define interfaces for the data structures
 interface MovieData {
   id: number;
   title: string;
@@ -17,7 +16,6 @@ interface TVData {
   poster_path: string;
 }
 
-// Helper function to read and parse CSV files
 async function readCSV(filename: string): Promise<any[]> {
   const filePath = path.join(process.cwd(), "data", filename);
   const fileContent = await fs.readFile(filePath, "utf-8");
@@ -38,7 +36,6 @@ async function readMatrixCSV(filename: string): Promise<number[][]> {
   });
 }
 
-// Function to get movie recommendations
 async function getMovieRecommendations(movieId: string) {
   try {
     const movieData: MovieData[] = await readCSV("movieindex.csv");
@@ -63,7 +60,6 @@ async function getMovieRecommendations(movieId: string) {
   }
 }
 
-// Function to get TV recommendations
 async function getTVRecommendations(tvId: string) {
   try {
     const tvData: TVData[] = await readCSV("tvindex.csv");
@@ -88,7 +84,6 @@ async function getTVRecommendations(tvId: string) {
   }
 }
 
-// POST handler for /api/recommend/movie
 export async function POST(
   request: NextRequest,
   { params }: { params: { type: string } }

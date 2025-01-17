@@ -21,7 +21,7 @@ const fetchmoviespopular = async (uri: string, page: number) => {
 
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
-    const body = await req.json(); // Parse the request body
+    const body = await req.json(); 
     const { uri, page } = body;
     const data = await fetchmoviespopular(uri, page);
     if (data) {
