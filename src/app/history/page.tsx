@@ -41,8 +41,8 @@ const Page = () => {
   return (
     <div className="relative flex flex-row w-screen h-screen bg-black overflow-hidden text-white">
       <SideBar />
-      <div className="flex flex-col ml- overflow-auto">
-        <div className="mt-5 text-4xl mb-6w font-semibold">
+      <div className="flex flex-col ml- overflow-auto scrollbar-thin scrollbar-thumb-white scrollbar-track-black">
+        <div className="mt-5 mb-4 text-4xl mb-6w font-semibold">
           Continue Watching
         </div>
         <div className="flex flex-row flex-wrap justify-start w-full">
