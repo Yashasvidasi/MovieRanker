@@ -639,7 +639,7 @@ const MoviePage = ({ params }: { params: any }) => {
               onLoad={handlecc}
               src={
                 selectedServer === "Server 1"
-                  ? `https://vidsrc.vc/embed/tv/${params.tvid}/${season}/${episode}`
+                  ? `https://111movies.com/tv/${params.tvid}/${season}/${episode}`
                   : selectedServer === "Server 2"
                   ? `https://vidsrc.in/embed/tv/${params.tvid}/${season}/${episode}`
                   : selectedServer === "Server 3"
